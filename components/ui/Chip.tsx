@@ -5,7 +5,9 @@ import { HTMLAttributes } from 'react'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-interface ChipProps extends HTMLAttributes<HTMLDivElement> {
+interface ChipProps extends Omit<HTMLAttributes<HTMLDivElement>,
+  'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart' | 'onAnimationEnd'
+> {
   label: string
   onRemove?: () => void
   selected?: boolean

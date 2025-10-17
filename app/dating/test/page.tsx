@@ -290,7 +290,7 @@ export default function DatingTestPage() {
                     </p>
                   )}
 
-                  {question.type === 'scale' ? (
+                  {'type' in question && question.type === 'scale' ? (
                     <div className="space-y-3">
                       <input
                         type="range"
@@ -315,9 +315,9 @@ export default function DatingTestPage() {
                         ))}
                       </div>
                     </div>
-                  ) : (
+                  ) : 'options' in question ? (
                     <div className="flex flex-wrap gap-2">
-                      {question.options?.map((option) => (
+                      {question.options.map((option) => (
                         <Chip
                           key={option}
                           label={option}
@@ -326,7 +326,7 @@ export default function DatingTestPage() {
                         />
                       ))}
                     </div>
-                  )}
+                  ) : null}
                 </Card>
               ))}
             </div>

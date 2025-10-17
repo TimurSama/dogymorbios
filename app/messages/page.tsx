@@ -145,7 +145,8 @@ export default function MessagesPage() {
         {/* Input */}
         <div className="border-t border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark p-4">
           <div className="flex items-end gap-2">
-            <button className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5">
+            <button className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5" aria-label="Прикрепить изображение">
+              {/* eslint-disable-next-line jsx-a11y/alt-text */}
               <Image size={20} className="text-text-secondary-light dark:text-text-secondary-dark" />
             </button>
             <div className="flex-1 bg-surface2-light dark:bg-surface2-dark rounded-lg px-4 py-2">

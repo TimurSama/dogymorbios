@@ -284,7 +284,7 @@ export default function PresentationPage() {
                   )}
 
                   {/* Points List */}
-                  {('points' in slide) && (
+                  {('points' in slide) && slide.points && (
                     <ul className="space-y-3 max-w-2xl mx-auto">
                       {slide.points.map((point, i) => (
                         <motion.li
@@ -302,7 +302,7 @@ export default function PresentationPage() {
                   )}
 
                   {/* Features Grid */}
-                  {('features' in slide && Array.isArray(slide.features) && typeof slide.features[0] === 'object') && (
+                  {('features' in slide && slide.features && Array.isArray(slide.features) && typeof slide.features[0] === 'object') && (
                     <div className="grid md:grid-cols-3 gap-6">
                       {slide.features.map((feature: any, i: number) => (
                         <motion.div
@@ -325,7 +325,7 @@ export default function PresentationPage() {
                   )}
 
                   {/* Stats */}
-                  {('stats' in slide) && (
+                  {('stats' in slide) && slide.stats && (
                     <div className="grid md:grid-cols-4 gap-6">
                       {slide.stats.map((stat: any, i: number) => (
                         <motion.div
@@ -348,7 +348,7 @@ export default function PresentationPage() {
                   )}
 
                   {/* Revenue Streams */}
-                  {('streams' in slide) && (
+                  {('streams' in slide) && slide.streams && (
                     <div className="space-y-4">
                       {slide.streams.map((stream: any, i: number) => (
                         <motion.div
@@ -373,7 +373,7 @@ export default function PresentationPage() {
                   )}
 
                   {/* Quarters */}
-                  {('quarters' in slide) && (
+                  {('quarters' in slide) && slide.quarters && (
                     <div className="grid md:grid-cols-4 gap-4">
                       {slide.quarters.map((quarter: any, i: number) => (
                         <motion.div
@@ -397,7 +397,7 @@ export default function PresentationPage() {
                   )}
 
                   {/* Benefits */}
-                  {('benefits' in slide) && (
+                  {('benefits' in slide) && slide.benefits && (
                     <div className="grid md:grid-cols-2 gap-6">
                       {slide.benefits.map((benefit: any, i: number) => (
                         <motion.div
@@ -420,9 +420,9 @@ export default function PresentationPage() {
                   )}
 
                   {/* Features List (strings) */}
-                  {('features' in slide && Array.isArray(slide.features) && typeof slide.features[0] === 'string') && (
+                  {('features' in slide && slide.features && Array.isArray(slide.features) && typeof slide.features[0] === 'string') && (
                     <div className="grid md:grid-cols-2 gap-3 max-w-3xl mx-auto">
-                      {slide.features.map((feature: string, i: number) => (
+                      {(slide.features as string[]).map((feature: string, i: number) => (
                         <motion.div
                           key={i}
                           initial={{ opacity: 0, x: -10 }}
@@ -437,7 +437,7 @@ export default function PresentationPage() {
                   )}
 
                   {/* Cases */}
-                  {('cases' in slide) && (
+                  {('cases' in slide) && slide.cases && (
                     <div className="space-y-6">
                       {slide.cases.map((case_: any, i: number) => (
                         <motion.div
@@ -454,7 +454,7 @@ export default function PresentationPage() {
                             <span className="text-body font-bold text-success">{case_.result}</span>
                           </div>
                           <p className="text-body italic text-text-secondary-light dark:text-text-secondary-dark">
-                            "{case_.quote}"
+                            &quot;{case_.quote}&quot;
                           </p>
                         </motion.div>
                       ))}
@@ -462,7 +462,7 @@ export default function PresentationPage() {
                   )}
 
                   {/* Plans */}
-                  {('plans' in slide) && (
+                  {('plans' in slide) && slide.plans && (
                     <div className="grid md:grid-cols-3 gap-6">
                       {slide.plans.map((plan: any, i: number) => (
                         <motion.div
@@ -501,7 +501,7 @@ export default function PresentationPage() {
                   )}
 
                   {/* Steps */}
-                  {('steps' in slide) && (
+                  {('steps' in slide) && slide.steps && (
                     <div className="grid md:grid-cols-3 gap-6 mb-8">
                       {slide.steps.map((step: any, i: number) => (
                         <motion.div

@@ -4,7 +4,9 @@ import { motion } from 'framer-motion'
 import { HTMLAttributes, forwardRef } from 'react'
 import { cn } from '@/lib/utils'
 
-interface CardProps extends HTMLAttributes<HTMLDivElement> {
+interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, 
+  'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart' | 'onAnimationEnd'
+> {
   elevation?: 0 | 1 | 2 | 3
   rounded?: 'sm' | 'md' | 'lg' | 'xl'
   hover?: boolean

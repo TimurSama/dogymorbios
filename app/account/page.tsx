@@ -170,7 +170,7 @@ export default function AccountPage() {
                       <p className="text-gray-700 dark:text-gray-300 mb-3">{user.bio}</p>
                     ) : (
                       <p className="text-gray-500 dark:text-gray-500 italic mb-3">
-                        Расскажите о себе (нажмите "Редактировать")
+                        Расскажите о себе (нажмите &quot;Редактировать&quot;)
                       </p>
                     )}
 
