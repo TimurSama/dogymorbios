@@ -1,0 +1,283 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Дизайн-токены Dogymorbis */
+
+:root {
+  /* Light Theme */
+  --background: #FFFFFF;
+  --surface: #FAF8F5;
+  --surface-2: #F0ECE7;
+  --text-primary: #1C1A19;
+  --text-secondary: #58524D;
+  --line: #D9D3CC;
+  --outline: #B8AEA5;
+  
+  /* Accents */
+  --sky: #AFCBFF;
+  --honey: #E8DCA8;
+  --burgundy: #A95056;
+  --chocolate: #6B4B3E;
+  --success: #86C8BC;
+  --warning: #E1A177;
+  --danger: #E57C73;
+  --info: #7FA7D9;
+  
+  /* State Layer */
+  --state-hover: rgba(0, 0, 0, 0.04);
+  --state-pressed: rgba(0, 0, 0, 0.08);
+  --state-focus: rgba(175, 203, 255, 0.12);
+}
+
+.dark {
+  /* Dark Theme */
+  --background: #2C2B29;
+  --surface: #1F1E1C;
+  --surface-2: #3A3634;
+  --text-primary: #F5F4F2;
+  --text-secondary: #CFCAC5;
+  --line: #4A4542;
+  --outline: #665E58;
+  
+  /* State Layer Dark */
+  --state-hover: rgba(255, 255, 255, 0.04);
+  --state-pressed: rgba(255, 255, 255, 0.08);
+  --state-focus: rgba(175, 203, 255, 0.12);
+}
+
+/* Микрошум текстура */
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.5' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Плавная анимация для всех переходов */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Базовые стили */
+@layer base {
+  html {
+    @apply antialiased;
+  }
+  
+  h1 {
+    @apply text-display font-bold;
+  }
+  
+  h2 {
+    @apply text-title font-semibold;
+  }
+  
+  h3 {
+    @apply text-label font-semibold;
+  }
+  
+  p {
+    @apply text-body;
+  }
+  
+  small {
+    @apply text-caption;
+  }
+}
+
+/* Компонентные утилиты */
+@layer components {
+  /* State Layer - для интерактивных элементов */
+  .state-layer {
+    @apply relative overflow-hidden;
+  }
+  
+  .state-layer::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-150 pointer-events-none;
+    background-color: var(--state-hover);
+  }
+  
+  .state-layer:hover::before {
+    @apply opacity-100;
+  }
+  
+  .state-layer:active::before {
+    background-color: var(--state-pressed);
+    @apply opacity-100;
+  }
+  
+  .state-layer:focus-visible::before {
+    background-color: var(--state-focus);
+    @apply opacity-100;
+  }
+  
+  /* Elevation тени */
+  .elevation-0 {
+    box-shadow: 0 0 0 1px var(--outline);
+  }
+  
+  .elevation-1 {
+    box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 0 0 1px var(--outline);
+  }
+  
+  .elevation-2 {
+    box-shadow: 0 2px 6px rgba(0,0,0,.10), 0 0 0 1px var(--outline);
+  }
+  
+  .elevation-3 {
+    box-shadow: 0 4px 12px rgba(0,0,0,.14), 0 0 0 1px var(--outline);
+  }
+  
+  /* Анимация появления */
+  .fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .slide-up {
+    animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Скроллбар */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: var(--surface);
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--outline);
+    border-radius: 4px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+  }
+}
+
+/* Утилиты */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .blur-backdrop {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  
+  /* Gradient для акцентов */
+  .gradient-sky {
+    background: linear-gradient(135deg, var(--sky) 0%, var(--info) 100%);
+  }
+  
+  .gradient-honey {
+    background: linear-gradient(135deg, var(--honey) 0%, var(--warning) 100%);
+  }
+  
+  /* Tap animation компрессия */
+  .tap-compress {
+    transform: scale(1);
+    transition: transform 120ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .tap-compress:active {
+    transform: scale(0.985);
+  }
+}
+
+/* Кастомные лоадеры */
+@keyframes rolling-ball {
+  0% {
+    transform: rotate(0deg) translateX(0);
+  }
+  100% {
+    transform: rotate(360deg) translateX(2px);
+  }
+}
+
+@keyframes paw-trail {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes medallion-swing {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(15deg);
+  }
+  75% {
+    transform: rotate(-15deg);
+  }
+}
+
+/* PWA стили */
+@media (display-mode: standalone) {
+  body {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+  
+  h1 {
+    @apply text-title;
+  }
+}
+
+/* Печать */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+}
+
+
