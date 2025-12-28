@@ -14,7 +14,7 @@
   --line: #D9D3CC;
   --outline: #B8AEA5;
   
-  /* Accents */
+  /* Accents - пастельные тона */
   --sky: #AFCBFF;
   --honey: #E8DCA8;
   --burgundy: #A95056;
@@ -23,6 +23,14 @@
   --warning: #E1A177;
   --danger: #E57C73;
   --info: #7FA7D9;
+  
+  /* Дополнительные пастельные акценты */
+  --pastel-pink: #FFB3BA;
+  --pastel-lavender: #BAE1FF;
+  --pastel-mint: #BAFFC9;
+  --pastel-peach: #FFDFBA;
+  --pastel-lilac: #E6D5FF;
+  --pastel-rose: #FFD1DC;
   
   /* State Layer */
   --state-hover: rgba(0, 0, 0, 0.04);
@@ -57,11 +65,41 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Плавная анимация для всех переходов */
+/* Плавная анимация для всех переходов - оптимизация производительности */
 * {
   transition-property: background-color, border-color, color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+  /* Оптимизация для GPU */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Оптимизация анимаций для слабых устройств */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Оптимизация для устройств с низкой производительностью */
+@media (prefers-reduced-motion: no-preference) {
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  .will-change-opacity {
+    will-change: opacity;
+  }
+  
+  .will-change-scroll {
+    will-change: scroll-position;
+  }
 }
 
 /* Базовые стили */
@@ -118,26 +156,36 @@ body {
     @apply opacity-100;
   }
   
-  /* Elevation тени */
+  /* Elevation тени - мягкие и пастельные */
   .elevation-0 {
     box-shadow: 0 0 0 1px var(--outline);
   }
   
   .elevation-1 {
-    box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 0 0 1px var(--outline);
+    box-shadow: 0 2px 4px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04), 0 0 0 1px var(--outline);
   }
   
   .elevation-2 {
-    box-shadow: 0 2px 6px rgba(0,0,0,.10), 0 0 0 1px var(--outline);
+    box-shadow: 0 4px 8px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.06), 0 0 0 1px var(--outline);
   }
   
   .elevation-3 {
-    box-shadow: 0 4px 12px rgba(0,0,0,.14), 0 0 0 1px var(--outline);
+    box-shadow: 0 8px 16px rgba(0,0,0,.10), 0 4px 8px rgba(0,0,0,.08), 0 0 0 1px var(--outline);
   }
   
-  /* Анимация появления */
+  /* Мягкие тени для кнопок */
+  .shadow-soft {
+    box-shadow: 0 2px 8px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.06);
+  }
+  
+  .shadow-soft-lg {
+    box-shadow: 0 4px 16px rgba(0,0,0,.10), 0 2px 6px rgba(0,0,0,.08);
+  }
+  
+  /* Анимация появления - оптимизированная */
   .fade-in {
     animation: fadeIn 0.3s ease-out;
+    will-change: opacity;
   }
   
   @keyframes fadeIn {
@@ -151,16 +199,26 @@ body {
   
   .slide-up {
     animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: transform, opacity;
   }
   
   @keyframes slideUp {
     from {
-      transform: translateY(20px);
+      transform: translate3d(0, 20px, 0);
       opacity: 0;
     }
     to {
-      transform: translateY(0);
+      transform: translate3d(0, 0, 0);
       opacity: 1;
+    }
+  }
+  
+  /* Оптимизация для мобильных устройств */
+  @media (max-width: 768px) {
+    /* Уменьшаем сложность анимаций на мобильных */
+    .fade-in,
+    .slide-up {
+      animation-duration: 0.2s;
     }
   }
   
@@ -181,6 +239,16 @@ body {
   
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: var(--text-secondary);
+  }
+  
+  /* Скрытие scrollbar на мобильных */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -204,14 +272,35 @@ body {
     background: linear-gradient(135deg, var(--honey) 0%, var(--warning) 100%);
   }
   
-  /* Tap animation компрессия */
+  /* Tap animation компрессия - мягкая */
   .tap-compress {
     transform: scale(1);
-    transition: transform 120ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 150ms cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   
   .tap-compress:active {
-    transform: scale(0.985);
+    transform: scale(0.97);
+  }
+  
+  /* Spring анимация для кнопок */
+  .spring-button {
+    transition: all 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  .spring-button:hover {
+    transform: translateY(-1px);
+  }
+  
+  .spring-button:active {
+    transform: translateY(0) scale(0.98);
+  }
+  
+  /* Мобильные touch-зоны (минимум 44x44px) */
+  @media (max-width: 768px) {
+    .touch-target {
+      min-width: 44px;
+      min-height: 44px;
+    }
   }
 }
 
@@ -257,7 +346,7 @@ body {
   }
 }
 
-/* Адаптивность */
+/* Адаптивность - Mobile First */
 @media (max-width: 768px) {
   body {
     font-size: 14px;
@@ -266,6 +355,34 @@ body {
   h1 {
     @apply text-title;
   }
+  
+  /* Увеличенные touch-зоны для мобильных */
+  button, a, input, select, textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Оптимизация для одной руки */
+  .bottom-nav {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Safe area для устройств с вырезом */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+.safe-area-right {
+  padding-right: env(safe-area-inset-right);
 }
 
 /* Печать */

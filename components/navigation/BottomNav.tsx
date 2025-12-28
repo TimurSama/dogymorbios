@@ -1,15 +1,16 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
-import { Map, Home as FeedIcon, User, Home } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Map, Home as FeedIcon, User, MessageCircle, Wallet } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navItems = [
-  { id: 'home', label: 'Главная', icon: Home, path: '/' },
   { id: 'map', label: 'Карта', icon: Map, path: '/map' },
   { id: 'feed', label: 'Лента', icon: FeedIcon, path: '/feed' },
-  { id: 'account', label: 'Аккаунт', icon: User, path: '/account' },
+  { id: 'messages', label: 'Сообщения', icon: MessageCircle, path: '/messages' },
+  { id: 'wallet', label: 'Кошелёк', icon: Wallet, path: '/wallet' },
+  { id: 'account', label: 'Профиль', icon: User, path: '/account' },
 ]
 
 export function BottomNav() {
@@ -17,39 +18,81 @@ export function BottomNav() {
   const router = useRouter()
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-lg">
-      <div className="flex items-center justify-around h-16 px-4 max-w-screen-xl mx-auto">
+    <nav className={cn(
+      'fixed bottom-0 left-0 right-0 z-50',
+      'bg-[var(--surface)] dark:bg-[var(--surface)]',
+      'border-t border-[var(--outline)]',
+      'shadow-soft-lg',
+      'safe-area-bottom' // Для устройств с вырезом
+    )}>
+      <div className="flex items-center justify-around h-16 px-2 max-w-screen-xl mx-auto">
         {navItems.map((item) => {
-          const isActive = pathname === item.path
+          const isActive = pathname === item.path || pathname.startsWith(item.path + '/')
           const Icon = item.icon
 
           return (
-            <button
+            <motion.button
               key={item.id}
-              onClick={() => {
-                console.log('Navigating to:', item.path)
-                router.push(item.path)
-              }}
+              onClick={() => router.push(item.path)}
               className={cn(
                 'flex flex-col items-center justify-center flex-1 h-full relative',
-                'transition-colors duration-150 cursor-pointer',
+                'touch-target', // Минимум 44x44px
+                'transition-all duration-200',
+                'state-layer',
+                'rounded-lg mx-1',
                 isActive
-                  ? 'text-blue-500'
-                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  ? 'text-[var(--sky)]'
+                  : 'text-[var(--text-secondary)]'
               )}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.95 }}
             >
-              {isActive && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute inset-x-4 top-0 h-1 bg-blue-500 rounded-full"
-                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+              <AnimatePresence mode="wait">
+                {isActive && (
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute inset-0 bg-[var(--sky)] bg-opacity-10 rounded-lg"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ type: 'spring', stiffness: 420, damping: 26 }}
+                  />
+                )}
+              </AnimatePresence>
+              
+              <motion.div
+                animate={{
+                  scale: isActive ? 1.1 : 1,
+                  y: isActive ? -2 : 0,
+                }}
+                transition={{ type: 'spring', stiffness: 420, damping: 26 }}
+                className="relative z-10"
+              >
+                <Icon 
+                  size={24} 
+                  strokeWidth={isActive ? 2.5 : 2}
+                  className={cn(
+                    'transition-all duration-200',
+                    isActive && 'text-[var(--sky)]'
+                  )}
                 />
-              )}
-              <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
-              <span className={cn('text-xs mt-1', isActive && 'font-semibold')}>
+              </motion.div>
+              
+              <motion.span
+                animate={{
+                  opacity: isActive ? 1 : 0.7,
+                  scale: isActive ? 1 : 0.95,
+                }}
+                transition={{ duration: 0.2 }}
+                className={cn(
+                  'text-xs mt-0.5 relative z-10',
+                  'font-medium',
+                  isActive && 'text-[var(--sky)]'
+                )}
+              >
                 {item.label}
-              </span>
-            </button>
+              </motion.span>
+            </motion.button>
           )
         })}
       </div>

@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Menu, X, User, BookOpen, Wallet, MessageCircle, Heart,
   Users, Calendar, Trophy, ShoppingBag, Briefcase, Vote,
-  Settings, Sun, Moon
+  Settings, Sun, Moon, GraduationCap, Library
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTheme } from '@/components/ThemeProvider'
@@ -21,6 +21,8 @@ const menuItems = [
   { id: 'groups', label: 'Группы', icon: Users, path: '/groups' },
   { id: 'events', label: 'События', icon: Calendar, path: '/events' },
   { id: 'tasks', label: 'Задания', icon: Trophy, path: '/tasks' },
+  { id: 'training', label: 'Тренировки', icon: GraduationCap, path: '/training' },
+  { id: 'knowledge', label: 'База знаний', icon: Library, path: '/knowledge' },
   { id: 'store', label: 'Магазин', icon: ShoppingBag, path: '/store' },
   { id: 'partner', label: 'Партнёрская программа', icon: Briefcase, path: '/partner' },
   { id: 'dao', label: 'DAO / Управление', icon: Vote, path: '/dao' },

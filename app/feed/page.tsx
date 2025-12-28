@@ -8,6 +8,8 @@ import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { PawHeartIcon } from '@/components/icons/DogymorbisIcons'
 import { formatTime } from '@/lib/utils'
+import { PullToRefresh } from '@/components/ui/PullToRefresh'
+import { PostEditor } from '@/components/feed/PostEditor'
 
 interface Post {
   id: string
@@ -82,6 +84,7 @@ const tabs = ['Подписки', 'Топ', 'Группы', 'Рядом']
 export default function FeedPage() {
   const [activeTab, setActiveTab] = useState('Подписки')
   const [posts, setPosts] = useState(mockPosts)
+  const [showPostEditor, setShowPostEditor] = useState(false)
 
   const handleLike = (postId: string) => {
     setPosts(posts.map(post => 
@@ -91,19 +94,27 @@ export default function FeedPage() {
     ))
   }
 
+  const handleRefresh = async () => {
+    // Симуляция обновления данных
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    setPosts([...mockPosts])
+  }
+
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-[var(--bg)] safe-area-top">
       <AppBar 
         title="Лента" 
         actions={
-          <Button variant="ghost" className="!p-2">
-            <Plus size={20} />
-          </Button>
+          <motion.div whileTap={{ scale: 0.95 }}>
+            <Button variant="ghost" className="!p-2 touch-target">
+              <Plus size={20} />
+            </Button>
+          </motion.div>
         }
       />
 
-      {/* Tabs */}
-      <div className="flex border-b border-line-light dark:border-line-dark bg-surface-light dark:bg-surface-dark sticky top-14 z-30">
+      {/* Tabs - мобильная оптимизация */}
+      <div className="flex border-b border-[var(--outline)] bg-[var(--surface)] sticky top-14 z-30 safe-area-top">
         {tabs.map((tab) => (
           <button
             key={tab}
@@ -126,9 +137,9 @@ export default function FeedPage() {
         ))}
       </div>
 
-      {/* Feed */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar bg-background">
-        <div className="max-w-2xl mx-auto py-4 space-y-4">
+      {/* Feed - мобильная оптимизация с pull-to-refresh */}
+      <PullToRefresh onRefresh={handleRefresh}>
+        <div className="max-w-2xl mx-auto py-2 px-2 md:py-4 md:px-4 space-y-3 md:space-y-4">
           {posts.map((post, index) => (
             <motion.div
               key={post.id}
@@ -237,16 +248,32 @@ export default function FeedPage() {
             </motion.div>
           ))}
         </div>
-      </div>
+      </PullToRefresh>
 
-      {/* FAB */}
+      {/* FAB - мобильная оптимизация */}
       <motion.button
-        className="fixed bottom-20 right-6 md:bottom-6 w-14 h-14 rounded-full bg-sky text-white elevation-3 flex items-center justify-center z-40"
-        whileHover={{ scale: 1.1 }}
+        onClick={() => setShowPostEditor(true)}
+        className="fixed bottom-20 right-4 md:bottom-6 md:right-6 w-14 h-14 rounded-full bg-[var(--sky)] text-[#1F1E1C] shadow-soft-lg flex items-center justify-center z-40 touch-target safe-area-bottom"
+        whileHover={{ scale: 1.05, y: -2 }}
         whileTap={{ scale: 0.95 }}
+        transition={{ type: 'spring', stiffness: 420, damping: 26 }}
       >
-        <Plus size={24} />
+        <Plus size={24} strokeWidth={2.5} />
       </motion.button>
+
+      {/* Post Editor */}
+      {showPostEditor && (
+        <PostEditor
+          onPublish={(postData) => {
+            // Здесь будет API вызов для публикации
+            console.log('Публикация поста:', postData)
+            setShowPostEditor(false)
+            // Обновление ленты
+            handleRefresh()
+          }}
+          onCancel={() => setShowPostEditor(false)}
+        />
+      )}
     </div>
   )
 }

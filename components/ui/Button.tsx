@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
   'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart' | 'onAnimationEnd'
 > {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger'
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'honey' | 'sky'
   size?: 'sm' | 'md' | 'lg'
   fullWidth?: boolean
   loading?: boolean
@@ -24,19 +24,55 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     disabled,
     ...props 
   }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-150 state-layer tap-compress disabled:opacity-50 disabled:cursor-not-allowed'
+    // Базовые стили с мягкими тенями и плавными переходами
+    const baseStyles = cn(
+      'inline-flex items-center justify-center font-medium',
+      'transition-all duration-200 ease-out',
+      'state-layer',
+      'disabled:opacity-50 disabled:cursor-not-allowed',
+      'touch-target', // Минимум 44x44px на мобильных
+      'focus:outline-none focus:ring-2 focus:ring-offset-2',
+      'focus:ring-[var(--sky)] focus:ring-opacity-50'
+    )
     
     const variants = {
-      primary: 'bg-sky text-text-primary-dark hover:brightness-110 elevation-1',
-      secondary: 'bg-surface-2-light dark:bg-surface2-dark text-text-primary-light dark:text-text-primary-dark elevation-1',
-      ghost: 'bg-transparent text-text-primary-light dark:text-text-primary-dark hover:bg-state-hover',
-      danger: 'bg-danger text-white hover:brightness-110 elevation-1',
+      primary: cn(
+        'bg-[var(--sky)] text-[#1F1E1C]',
+        'shadow-soft hover:shadow-soft-lg',
+        'hover:brightness-105 active:brightness-95'
+      ),
+      honey: cn(
+        'bg-[var(--honey)] text-[#1C1A19]',
+        'shadow-soft hover:shadow-soft-lg',
+        'hover:brightness-105 active:brightness-95'
+      ),
+      sky: cn(
+        'bg-[var(--sky)] text-[#1F1E1C]',
+        'shadow-soft hover:shadow-soft-lg',
+        'hover:brightness-105 active:brightness-95'
+      ),
+      secondary: cn(
+        'bg-[var(--surface-2)] dark:bg-[var(--surface-2)]',
+        'text-[var(--text-primary)]',
+        'shadow-soft hover:shadow-soft-lg',
+        'border border-[var(--outline)]'
+      ),
+      ghost: cn(
+        'bg-transparent text-[var(--text-primary)]',
+        'hover:bg-[var(--state-hover)]',
+        'border border-transparent'
+      ),
+      danger: cn(
+        'bg-[var(--danger)] text-white',
+        'shadow-soft hover:shadow-soft-lg',
+        'hover:brightness-105 active:brightness-95'
+      ),
     }
     
     const sizes = {
-      sm: 'px-3 py-1.5 text-caption',
-      md: 'px-4 py-2 text-body',
-      lg: 'px-6 py-3 text-label',
+      sm: 'px-3 py-2 text-caption rounded-lg',
+      md: 'px-5 py-2.5 text-body rounded-lg',
+      lg: 'px-6 py-3 text-label rounded-xl',
     }
 
     return (
@@ -49,16 +85,25 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           fullWidth && 'w-full',
           className
         )}
-        whileTap={{ scale: 0.985 }}
+        whileHover={{ 
+          y: -1,
+          transition: { type: "spring", stiffness: 420, damping: 26 }
+        }}
+        whileTap={{ 
+          scale: 0.97,
+          y: 0,
+          transition: { type: "spring", stiffness: 420, damping: 26 }
+        }}
         disabled={disabled || loading}
         {...props}
       >
         {loading ? (
           <div className="flex items-center gap-2">
-            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-            </svg>
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              className="w-4 h-4 border-2 border-current border-t-transparent rounded-full"
+            />
             <span>Загрузка...</span>
           </div>
         ) : children}

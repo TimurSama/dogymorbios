@@ -1,13 +1,16 @@
 'use client'
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { MapPin, Navigation, Play, Square, Filter, Users, Calendar } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { MapPin, Navigation, Filter, Users, Calendar, Sparkles } from 'lucide-react'
 import { AppBar } from '@/components/navigation/AppBar'
-import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Chip } from '@/components/ui/Chip'
 import { TreeIcon, BowlIcon, PawIcon } from '@/components/icons/DogymorbisIcons'
+import { WalkTracker } from '@/components/map/WalkTracker'
+import { CollectibleMarker } from '@/components/map/CollectibleMarker'
+import { useGeolocation } from '@/hooks/useGeolocation'
+import { useCollectibles } from '@/hooks/useCollectibles'
 
 interface MapMarker {
   id: string
@@ -36,9 +39,36 @@ const categories = [
 ]
 
 export default function MapPage() {
-  const [isWalking, setIsWalking] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState('all')
-  const [walkStats, setWalkStats] = useState({ distance: 0, duration: 0, boneCoin: 0 })
+  const [showCollectibles, setShowCollectibles] = useState(true)
+  const [totalBoneCoinEarned, setTotalBoneCoinEarned] = useState(0)
+  
+  // Геолокация пользователя
+  const { position: userPosition, error: geoError } = useGeolocation({
+    enableHighAccuracy: true,
+    timeout: 10000,
+  })
+
+  // Система сбора призов
+  const {
+    collectibles,
+    nearbyCollectibles,
+    collect,
+    collectedIds,
+  } = useCollectibles({
+    userLat: userPosition?.lat,
+    userLng: userPosition?.lng,
+    radius: 500, // 500 метров
+  })
+
+  // Обработка сбора приза
+  const handleCollect = (id: string) => {
+    const collected = collect(id)
+    if (collected) {
+      setTotalBoneCoinEarned(prev => prev + collected.value)
+      // Здесь можно добавить анимацию и звук
+    }
+  }
 
   const filteredMarkers = selectedCategory === 'all' 
     ? mockMarkers 
@@ -61,17 +91,20 @@ export default function MapPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-[var(--bg)] safe-area-top">
       <AppBar 
         title="Карта прогулок" 
         actions={
-          <button className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 state-layer">
-            <Filter size={20} className="text-text-primary-light dark:text-text-primary-dark" />
-          </button>
+          <motion.button 
+            className="p-2 rounded-lg state-layer touch-target"
+            whileTap={{ scale: 0.95 }}
+          >
+            <Filter size={20} className="text-[var(--text-primary)]" />
+          </motion.button>
         }
       />
 
-      <div className="flex-1 relative bg-surface2-light dark:bg-surface2-dark">
+      <div className="flex-1 relative bg-[var(--surface-2)] overflow-hidden">
         {/* Карта (заглушка) */}
         <div className="absolute inset-0 bg-gradient-to-br from-success/20 to-sky/20">
           <div className="absolute inset-0 flex items-center justify-center">
@@ -111,9 +144,9 @@ export default function MapPage() {
           ))}
         </div>
 
-        {/* Категории фильтров */}
-        <div className="absolute top-4 left-4 right-4 z-10">
-          <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
+        {/* Категории фильтров - мобильная оптимизация */}
+        <div className="absolute top-2 left-2 right-2 z-10 md:top-4 md:left-4 md:right-4">
+          <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar scrollbar-hide">
             {categories.map((cat) => (
               <Chip
                 key={cat.id}
@@ -123,84 +156,73 @@ export default function MapPage() {
                 onClick={() => setSelectedCategory(cat.id)}
               />
             ))}
+            <Chip
+              label="Призы"
+              icon={<Sparkles size={14} />}
+              selected={showCollectibles}
+              onClick={() => setShowCollectibles(!showCollectibles)}
+            />
           </div>
         </div>
 
-        {/* Контрол прогулки */}
-        <div className="absolute bottom-4 left-4 right-4 z-10">
-          {isWalking && (
-            <Card className="p-4 mb-4" elevation={3}>
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold text-text-primary-light dark:text-text-primary-dark">
-                  Прогулка в процессе
-                </h3>
-                <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 bg-danger rounded-full animate-pulse" />
-                  <span className="text-caption text-text-secondary-light dark:text-text-secondary-dark">
-                    Запись
-                  </span>
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-4 mb-4">
-                <div>
-                  <p className="text-caption text-text-secondary-light dark:text-text-secondary-dark">Расстояние</p>
-                  <p className="text-label font-bold text-text-primary-light dark:text-text-primary-dark">
-                    {walkStats.distance} км
-                  </p>
-                </div>
-                <div>
-                  <p className="text-caption text-text-secondary-light dark:text-text-secondary-dark">Время</p>
-                  <p className="text-label font-bold text-text-primary-light dark:text-text-primary-dark">
-                    {walkStats.duration} мин
-                  </p>
-                </div>
-                <div>
-                  <p className="text-caption text-text-secondary-light dark:text-text-secondary-dark">BoneCoin</p>
-                  <p className="text-label font-bold text-sky">
-                    +{walkStats.boneCoin} 🦴
-                  </p>
-                </div>
+        {/* Маркеры призов на карте */}
+        {showCollectibles && userPosition && nearbyCollectibles.map((collectible) => {
+          // Упрощённое позиционирование (в реальности нужна конвертация lat/lng в пиксели карты)
+          // Для демо используем относительное позиционирование
+          const latDiff = collectible.lat - userPosition.lat
+          const lngDiff = collectible.lng - userPosition.lng
+          const scale = 50000 // масштаб для конвертации градусов в проценты
+          
+          return (
+            <div
+              key={collectible.id}
+              className="absolute z-20"
+              style={{
+                left: `${50 + lngDiff * scale}%`,
+                top: `${50 + latDiff * scale}%`,
+                transform: 'translate(-50%, -50%)',
+              }}
+            >
+              <CollectibleMarker
+                collectible={collectible}
+                onCollect={handleCollect}
+                distance={collectible.distance}
+              />
+            </div>
+          )
+        })}
+
+        {/* Индикатор собранных призов */}
+        {totalBoneCoinEarned > 0 && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="absolute top-20 left-1/2 -translate-x-1/2 z-20"
+          >
+            <Card className="p-3 bg-[var(--honey)]/90 backdrop-blur-sm" elevation={3}>
+              <div className="flex items-center gap-2">
+                <Sparkles size={20} className="text-[var(--text-primary)]" />
+                <span className="text-body font-semibold text-[var(--text-primary)]">
+                  +{totalBoneCoinEarned} 🦴 собрано!
+                </span>
               </div>
             </Card>
-          )}
+          </motion.div>
+        )}
 
-          <Button
-            fullWidth
-            size="lg"
-            variant={isWalking ? 'danger' : 'primary'}
-            onClick={() => {
-              setIsWalking(!isWalking)
-              if (!isWalking) {
-                // Симуляция прогулки
-                const interval = setInterval(() => {
-                  setWalkStats(prev => ({
-                    distance: parseFloat((prev.distance + 0.1).toFixed(1)),
-                    duration: prev.duration + 1,
-                    boneCoin: prev.boneCoin + 1,
-                  }))
-                }, 1000)
-                return () => clearInterval(interval)
-              } else {
-                setWalkStats({ distance: 0, duration: 0, boneCoin: 0 })
-              }
+        {/* Контрол прогулки - мобильная оптимизация */}
+        <div className="absolute bottom-2 left-2 right-2 z-10 md:bottom-4 md:left-4 md:right-4 safe-area-bottom">
+          <WalkTracker
+            onSave={(stats) => {
+              // Сохранение статистики прогулки
+              console.log('Сохранение прогулки:', stats)
+              // Здесь будет API вызов для сохранения
             }}
-          >
-            {isWalking ? (
-              <>
-                <Square size={20} className="mr-2" fill="currentColor" />
-                Остановить прогулку
-              </>
-            ) : (
-              <>
-                <Play size={20} className="mr-2" fill="currentColor" />
-                Начать прогулку
-              </>
-            )}
-          </Button>
+          />
         </div>
 
-        {/* Список рядом */}
-        <div className="absolute right-4 top-24 z-10">
+        {/* Список рядом - скрыт на мобильных, показывается на планшетах+ */}
+        <div className="hidden md:block absolute right-4 top-24 z-10">
           <Card className="w-64 p-3" elevation={3}>
             <div className="flex items-center gap-2 mb-3">
               <Users size={16} className="text-sky" />

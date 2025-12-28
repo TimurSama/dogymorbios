@@ -2,12 +2,14 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Heart, SlidersHorizontal, MapPin, Star } from 'lucide-react'
+import { X, Heart, SlidersHorizontal, MapPin, Star, Sparkles } from 'lucide-react'
 import { AppBar } from '@/components/navigation/AppBar'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Chip } from '@/components/ui/Chip'
 import { PawHeartIcon } from '@/components/icons/DogymorbisIcons'
+import { PersonalityTest } from '@/components/dating/PersonalityTest'
+import { calculateMatchScore, sortByCompatibility, type MatchProfile, type PersonalityType } from '@/lib/matchmaking'
 
 interface DatingProfile {
   id: string
@@ -84,17 +86,73 @@ export default function DatingPage() {
   const [profiles, setProfiles] = useState(mockProfiles)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [matches, setMatches] = useState<DatingProfile[]>([])
+  const [showPersonalityTest, setShowPersonalityTest] = useState(false)
+  const [userPersonality, setUserPersonality] = useState<PersonalityType | null>(null)
 
+  // Конвертация mockProfiles в MatchProfile для расчёта совместимости
   const currentProfile = profiles[currentIndex]
+  
+  // Расчёт matchScore с использованием алгоритма Combo-Match
+  const profilesWithScores = profiles.map(profile => {
+    // Создаём упрощённые профили для расчёта (в реальности будут из БД)
+    const userProfile: MatchProfile = {
+      userId: 'current_user',
+      userPersonality: {
+        type: userPersonality || 'AMBIVERT',
+        energyLevel: 3,
+        sociability: 3,
+        activityPreference: ['walking', 'running'],
+      },
+      dogCharacteristics: {
+        energyLevel: 4,
+        sociability: 4,
+        trainability: 4,
+        age: 3,
+        size: 'medium',
+        breed: 'Лабрадор',
+      },
+      location: { lat: 55.7558, lng: 37.6173 },
+      interests: ['Прогулки', 'Тренировки'],
+    }
+
+    const matchProfile: MatchProfile = {
+      userId: profile.id,
+      userPersonality: {
+        type: 'AMBIVERT', // В реальности из БД
+        energyLevel: 3,
+        sociability: 3,
+        activityPreference: profile.interests,
+      },
+      dogCharacteristics: {
+        energyLevel: profile.dogPersonality.includes('Энергичный') ? 5 : 3,
+        sociability: profile.dogPersonality.includes('Дружелюбный') ? 4 : 3,
+        trainability: 4,
+        age: profile.dogAge,
+        size: 'medium',
+        breed: profile.dogBreed,
+      },
+      location: { lat: 55.7558, lng: 37.6173 },
+      interests: profile.interests,
+    }
+
+    const score = calculateMatchScore(userProfile, matchProfile)
+    return { ...profile, matchScore: score }
+  }).sort((a, b) => b.matchScore - a.matchScore)
 
   const handleSwipe = (direction: 'left' | 'right') => {
     if (direction === 'right') {
-      // Симуляция совпадения
-      if (Math.random() > 0.5) {
+      // Совпадение если matchScore > 70
+      if (currentProfile.matchScore > 70) {
         setMatches([...matches, currentProfile])
       }
     }
     setCurrentIndex(currentIndex + 1)
+  }
+
+  const handlePersonalityTestComplete = (result: PersonalityType) => {
+    setUserPersonality(result)
+    setShowPersonalityTest(false)
+    // Здесь можно сохранить результат в БД
   }
 
   if (activeTab === 'Свайпы' && currentProfile) {
@@ -103,12 +161,23 @@ export default function DatingPage() {
         <AppBar 
           title="Дейтинг" 
           actions={
-            <button 
-              onClick={() => setActiveTab('Фильтры')}
-              className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
-            >
-              <SlidersHorizontal size={20} />
-            </button>
+            <div className="flex items-center gap-2">
+              {!userPersonality && (
+                <button
+                  onClick={() => setShowPersonalityTest(true)}
+                  className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 touch-target"
+                  title="Пройти тест психотипа"
+                >
+                  <Sparkles size={20} className="text-[var(--sky)]" />
+                </button>
+              )}
+              <button 
+                onClick={() => setActiveTab('Фильтры')}
+                className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 touch-target"
+              >
+                <SlidersHorizontal size={20} />
+              </button>
+            </div>
           }
         />
 
@@ -130,10 +199,15 @@ export default function DatingPage() {
                       <div className="text-4xl">{currentProfile.avatar}</div>
                     </div>
                     {/* Match Score */}
-                    <div className="absolute top-4 right-4 bg-success text-white px-3 py-1 rounded-full elevation-2 flex items-center gap-1">
+                    <div className="absolute top-4 right-4 bg-gradient-to-r from-[var(--success)] to-[var(--sky)] text-white px-3 py-1 rounded-full elevation-2 flex items-center gap-1">
                       <Star size={14} fill="currentColor" />
-                      <span className="text-caption font-bold">{currentProfile.matchScore}%</span>
+                      <span className="text-caption font-bold">{profilesWithScores[currentIndex]?.matchScore || currentProfile.matchScore}%</span>
                     </div>
+                    {userPersonality && (
+                      <div className="absolute top-4 left-4 bg-[var(--honey)]/90 backdrop-blur-sm text-[var(--text-primary)] px-3 py-1 rounded-full elevation-2">
+                        <span className="text-caption font-medium">Combo-Match</span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Profile Info */}
@@ -326,7 +400,16 @@ export default function DatingPage() {
     )
   }
 
-  return null
+  return (
+    <>
+      {showPersonalityTest && (
+        <PersonalityTest
+          onComplete={handlePersonalityTestComplete}
+          onCancel={() => setShowPersonalityTest(false)}
+        />
+      )}
+    </>
+  )
 }
 
 

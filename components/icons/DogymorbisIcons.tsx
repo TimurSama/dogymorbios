@@ -1,13 +1,16 @@
 'use client'
 
+import { motion } from 'framer-motion'
+
 interface IconProps {
   size?: number
   className?: string
   strokeWidth?: number
+  animated?: boolean
 }
 
-export function DoghouseIcon({ size = 24, className = '', strokeWidth = 2 }: IconProps) {
-  return (
+export function DoghouseIcon({ size = 24, className = '', strokeWidth = 2, animated = false }: IconProps) {
+  const icon = (
     <svg 
       width={size} 
       height={size} 
@@ -23,6 +26,20 @@ export function DoghouseIcon({ size = 24, className = '', strokeWidth = 2 }: Ico
       <path d="M9 20V14H15V20" />
     </svg>
   )
+  
+  if (animated) {
+    return (
+      <motion.div
+        whileHover={{ scale: 1.1, rotate: 2 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ type: 'spring', stiffness: 420, damping: 26 }}
+      >
+        {icon}
+      </motion.div>
+    )
+  }
+  
+  return icon
 }
 
 export function EarBubbleIcon({ size = 24, className = '', strokeWidth = 2 }: IconProps) {
@@ -44,8 +61,8 @@ export function EarBubbleIcon({ size = 24, className = '', strokeWidth = 2 }: Ic
   )
 }
 
-export function PawHeartIcon({ size = 24, className = '', strokeWidth = 2 }: IconProps) {
-  return (
+export function PawHeartIcon({ size = 24, className = '', strokeWidth = 2.5, animated = false }: IconProps) {
+  const icon = (
     <svg 
       width={size} 
       height={size} 
@@ -63,6 +80,20 @@ export function PawHeartIcon({ size = 24, className = '', strokeWidth = 2 }: Ico
       <ellipse cx="12" cy="7" rx="1.5" ry="2" />
     </svg>
   )
+  
+  if (animated) {
+    return (
+      <motion.div
+        whileHover={{ scale: 1.15 }}
+        whileTap={{ scale: 0.9 }}
+        transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+      >
+        {icon}
+      </motion.div>
+    )
+  }
+  
+  return icon
 }
 
 export function MedallionIcon({ size = 24, className = '', strokeWidth = 2 }: IconProps) {

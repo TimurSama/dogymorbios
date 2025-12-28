@@ -46,7 +46,7 @@ export default function WalletPage() {
   const [activeTab, setActiveTab] = useState('Баланс')
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-[var(--bg)] safe-area-top">
       <AppBar title="Кошелёк" />
 
       <div className="flex-1 overflow-y-auto custom-scrollbar bg-background">

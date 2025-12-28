@@ -1,13 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Calendar, Plus, Sparkles, ChevronLeft, ChevronRight, Heart, Activity, Utensils, Stethoscope } from 'lucide-react'
+import { Calendar, Plus, Sparkles, ChevronLeft, ChevronRight, Heart, Activity, Utensils, Stethoscope, Brain } from 'lucide-react'
+import { JournalEntryEditor } from '@/components/journal/JournalEntryEditor'
 import { AppBar } from '@/components/navigation/AppBar'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Chip } from '@/components/ui/Chip'
 import { formatDate } from '@/lib/utils'
+import { performAIAnalysis, type AIRecommendation } from '@/lib/ai-analysis'
 
 interface JournalEntry {
   id: string
@@ -63,6 +65,29 @@ export default function JournalPage() {
   const [selectedType, setSelectedType] = useState('all')
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [showAIRecommendations, setShowAIRecommendations] = useState(true)
+  const [showEditor, setShowEditor] = useState(false)
+  const [aiAnalysis, setAiAnalysis] = useState<{
+    patterns: string[]
+    insights: string[]
+    recommendations: AIRecommendation[]
+    summary: string
+  } | null>(null)
+
+  // Выполняем AI-анализ при загрузке
+  useEffect(() => {
+    const entries = mockEntries.map(entry => ({
+      id: entry.id,
+      type: entry.type,
+      date: entry.date,
+      data: {
+        distance: entry.distance,
+        duration: entry.duration,
+        mood: entry.mood,
+      },
+    }))
+    const analysis = performAIAnalysis(entries)
+    setAiAnalysis(analysis)
+  }, [])
 
   const filteredEntries = selectedType === 'all'
     ? mockEntries
@@ -102,32 +127,53 @@ export default function JournalPage() {
       <div className="flex-1 overflow-y-auto custom-scrollbar bg-background">
         <div className="max-w-4xl mx-auto p-4 space-y-4">
           {/* AI Recommendations */}
-          {showAIRecommendations && (
+          {showAIRecommendations && aiAnalysis && (
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
+              className="space-y-3"
             >
-              <Card className="p-4 bg-gradient-honey relative overflow-hidden" elevation={2}>
+              <Card className="p-4 bg-gradient-to-br from-[var(--honey)]/20 to-[var(--sky)]/20 relative overflow-hidden border-2 border-[var(--honey)]/30" elevation={2}>
                 <button
                   onClick={() => setShowAIRecommendations(false)}
-                  className="absolute top-2 right-2 text-text-primary-dark hover:opacity-70"
+                  className="absolute top-2 right-2 text-[var(--text-primary)] hover:opacity-70 touch-target"
                 >
                   ✕
                 </button>
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-full bg-white/30 flex items-center justify-center">
-                    <Sparkles size={20} className="text-text-primary-dark" />
+                  <div className="w-10 h-10 rounded-full bg-[var(--honey)]/30 flex items-center justify-center">
+                    <Brain size={20} className="text-[var(--honey)]" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-label font-bold text-text-primary-dark mb-1">
-                      AI-рекомендации
+                    <h3 className="text-label font-bold text-[var(--text-primary)] mb-2">
+                      AI-анализ журнала
                     </h3>
-                    <p className="text-body text-text-primary-dark/90 mb-3">
-                      На основе анализа ваших записей: Рекс очень активен по утрам. Рекомендуем увеличить длительность утренней прогулки до 60 минут для лучшего баланса энергии.
-                    </p>
-                    <Button size="sm" variant="secondary">
-                      Подробнее
-                    </Button>
+                    {aiAnalysis.insights.length > 0 && (
+                      <div className="space-y-2 mb-3">
+                        {aiAnalysis.insights.map((insight, index) => (
+                          <p key={index} className="text-body text-[var(--text-primary)]/90">
+                            {insight}
+                          </p>
+                        ))}
+                      </div>
+                    )}
+                    {aiAnalysis.recommendations.length > 0 && (
+                      <div className="space-y-2">
+                        <p className="text-caption font-semibold text-[var(--text-primary)] mb-1">
+                          Рекомендации:
+                        </p>
+                        {aiAnalysis.recommendations.slice(0, 2).map((rec, index) => (
+                          <div key={index} className="p-2 rounded-lg bg-[var(--surface)]/50">
+                            <p className="text-caption font-medium text-[var(--text-primary)]">
+                              {rec.title}
+                            </p>
+                            <p className="text-caption text-[var(--text-secondary)]">
+                              {rec.description}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </Card>
@@ -272,12 +318,25 @@ export default function JournalPage() {
 
       {/* FAB */}
       <motion.button
-        className="fixed bottom-20 right-6 md:bottom-6 w-14 h-14 rounded-full bg-burgundy text-white elevation-3 flex items-center justify-center z-40"
+        onClick={() => setShowEditor(true)}
+        className="fixed bottom-20 right-6 md:bottom-6 w-14 h-14 rounded-full bg-burgundy text-white elevation-3 flex items-center justify-center z-40 touch-target safe-area-bottom"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
       >
         <Plus size={24} />
       </motion.button>
+
+      {/* Editor */}
+      {showEditor && (
+        <JournalEntryEditor
+          onSave={(data) => {
+            console.log('Сохранение записи:', data)
+            setShowEditor(false)
+            // Здесь будет API вызов
+          }}
+          onCancel={() => setShowEditor(false)}
+        />
+      )}
     </div>
   )
 }
