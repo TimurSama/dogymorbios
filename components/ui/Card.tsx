@@ -23,7 +23,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     children, 
     ...props 
   }, ref) => {
-    const baseStyles = 'bg-surface-light dark:bg-surface-dark'
+    const baseStyles = 'bg-[var(--md-sys-color-surface)]'
     
     const elevations = {
       0: 'elevation-0',
@@ -60,12 +60,12 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
         ref={ref}
         className={cn(
           baseStyles,
-          'bg-[var(--surface)]',
           elevations[elevation],
           roundings[rounded],
           'transition-all duration-200',
+          'border border-[var(--md-sys-color-outline-variant)]/50',
           interactive && 'cursor-pointer state-layer',
-          hover && 'hover:shadow-soft-lg',
+          hover && 'hover:elevation-3',
           className
         )}
         {...motionProps}

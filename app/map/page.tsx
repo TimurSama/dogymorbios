@@ -9,6 +9,7 @@ import { Chip } from '@/components/ui/Chip'
 import { TreeIcon, BowlIcon, PawIcon } from '@/components/icons/DogymorbisIcons'
 import { WalkTracker } from '@/components/map/WalkTracker'
 import { CollectibleMarker } from '@/components/map/CollectibleMarker'
+import { MapView } from '@/components/map/MapView'
 import { useGeolocation } from '@/hooks/useGeolocation'
 import { useCollectibles } from '@/hooks/useCollectibles'
 
@@ -104,20 +105,23 @@ export default function MapPage() {
         }
       />
 
-      <div className="flex-1 relative bg-[var(--surface-2)] overflow-hidden">
-        {/* Карта (заглушка) */}
-        <div className="absolute inset-0 bg-gradient-to-br from-success/20 to-sky/20">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center">
-              <Navigation size={48} className="mx-auto mb-4 text-sky animate-pulse" />
-              <p className="text-body text-text-secondary-light dark:text-text-secondary-dark">
-                Интерактивная карта
-              </p>
-              <p className="text-caption text-text-secondary-light dark:text-text-secondary-dark mt-1">
-                (здесь будет интеграция с Google Maps / Mapbox)
-              </p>
-            </div>
-          </div>
+      <div className="flex-1 relative bg-[var(--md-sys-color-surface-variant)] overflow-hidden">
+        {/* Реальная карта */}
+        <MapView
+          center={{
+            lat: userPosition?.lat || 55.7558,
+            lng: userPosition?.lng || 37.6173,
+          }}
+          zoom={14}
+          markers={filteredMarkers.map(m => ({
+            id: m.id,
+            lat: m.lat,
+            lng: m.lng,
+            type: m.type,
+            name: m.name,
+          }))}
+          className="absolute inset-0"
+        />
 
           {/* Маркеры на карте */}
           {filteredMarkers.map((marker, index) => (

@@ -37,35 +37,34 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     
     const variants = {
       primary: cn(
-        'bg-[var(--sky)] text-[#1F1E1C]',
-        'shadow-soft hover:shadow-soft-lg',
-        'hover:brightness-105 active:brightness-95'
+        'bg-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-primary)]',
+        'elevation-1 hover:elevation-2',
+        'hover:bg-[var(--md-sys-color-primary)]/90'
       ),
       honey: cn(
-        'bg-[var(--honey)] text-[#1C1A19]',
-        'shadow-soft hover:shadow-soft-lg',
-        'hover:brightness-105 active:brightness-95'
+        'bg-[var(--dog-honey)] text-[var(--md-sys-color-on-surface)]',
+        'elevation-1 hover:elevation-2',
+        'hover:bg-[var(--dog-honey)]/90'
       ),
       sky: cn(
-        'bg-[var(--sky)] text-[#1F1E1C]',
-        'shadow-soft hover:shadow-soft-lg',
-        'hover:brightness-105 active:brightness-95'
+        'bg-[var(--dog-sky)] text-[var(--md-sys-color-on-surface)]',
+        'elevation-1 hover:elevation-2',
+        'hover:bg-[var(--dog-sky)]/90'
       ),
       secondary: cn(
-        'bg-[var(--surface-2)] dark:bg-[var(--surface-2)]',
-        'text-[var(--text-primary)]',
-        'shadow-soft hover:shadow-soft-lg',
-        'border border-[var(--outline)]'
+        'bg-[var(--md-sys-color-secondary-container)] text-[var(--md-sys-color-on-secondary-container)]',
+        'elevation-0 hover:elevation-1',
+        'border border-[var(--md-sys-color-outline-variant)]'
       ),
       ghost: cn(
-        'bg-transparent text-[var(--text-primary)]',
-        'hover:bg-[var(--state-hover)]',
+        'bg-transparent text-[var(--md-sys-color-on-surface)]',
+        'hover:bg-[var(--md-state-hover)]',
         'border border-transparent'
       ),
       danger: cn(
-        'bg-[var(--danger)] text-white',
-        'shadow-soft hover:shadow-soft-lg',
-        'hover:brightness-105 active:brightness-95'
+        'bg-[var(--md-sys-color-error)] text-[var(--md-sys-color-on-error)]',
+        'elevation-1 hover:elevation-2',
+        'hover:bg-[var(--md-sys-color-error)]/90'
       ),
     }
     

@@ -25,13 +25,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-body font-medium text-text-primary-light dark:text-text-primary-dark mb-1.5">
+          <label className="block text-body font-medium text-[var(--md-sys-color-on-surface)] mb-1.5">
             {label}
           </label>
         )}
         <div className="relative">
           {icon && (
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary-light dark:text-text-secondary-dark">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--md-sys-color-on-surface-variant)]">
               {icon}
             </div>
           )}
@@ -40,17 +40,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             type={type}
             className={cn(
               'w-full px-4 py-3 rounded-lg text-body',
-              'bg-[var(--surface)]',
-              'text-[var(--text-primary)]',
-              'border border-[var(--outline)]',
-              'placeholder:text-[var(--text-secondary)]',
-              'focus:outline-none focus:ring-2 focus:ring-[var(--sky)] focus:ring-opacity-50 focus:border-[var(--sky)]',
+              'bg-[var(--md-sys-color-surface)]',
+              'text-[var(--md-sys-color-on-surface)]',
+              'border border-[var(--md-sys-color-outline-variant)]',
+              'placeholder:text-[var(--md-sys-color-on-surface-variant)]',
+              'focus:outline-none focus:ring-2 focus:ring-[var(--md-sys-color-primary)] focus:ring-opacity-50 focus:border-[var(--md-sys-color-primary)]',
               'transition-all duration-200',
               'disabled:opacity-50 disabled:cursor-not-allowed',
-              'touch-target', // Минимум 44px высота на мобильных
-              error && 'border-[var(--danger)] focus:ring-[var(--danger)]',
+              'touch-target',
+              error && 'border-[var(--md-sys-color-error)] focus:ring-[var(--md-sys-color-error)]',
               icon && 'pl-10',
-              focused && 'shadow-soft',
+              focused && 'elevation-1',
               className
             )}
             onFocus={() => setFocused(true)}
@@ -61,7 +61,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {(error || helperText) && (
           <p className={cn(
             'mt-1.5 text-caption',
-            error ? 'text-danger' : 'text-text-secondary-light dark:text-text-secondary-dark'
+            error ? 'text-[var(--md-sys-color-error)]' : 'text-[var(--md-sys-color-on-surface-variant)]'
           )}>
             {error || helperText}
           </p>

@@ -61,8 +61,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider>
           <AuthProvider>
-            <Sidebar />
-            <main className="pb-16">
+            <main className="pb-20 safe-area-bottom">
               {children}
             </main>
             <BottomNav />

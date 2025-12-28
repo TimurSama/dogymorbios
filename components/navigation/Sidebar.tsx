@@ -29,26 +29,23 @@ const menuItems = [
   { id: 'settings', label: 'Настройки', icon: Settings, path: '/settings' },
 ]
 
-export function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false)
+interface SidebarProps {
+  isOpen: boolean
+  onClose: () => void
+}
+
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
   const { theme, toggleTheme } = useTheme()
 
   const handleNavigate = (path: string) => {
     router.push(path)
-    setIsOpen(false)
+    onClose()
   }
 
   return (
     <>
-      {/* Кнопка бургер-меню - всегда видна */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed top-4 left-4 z-50 p-3 rounded-lg bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow border border-gray-200 dark:border-gray-700"
-      >
-        <Menu size={24} className="text-gray-800 dark:text-gray-200" />
-      </button>
 
       {/* Overlay */}
       <AnimatePresence>
@@ -57,8 +54,8 @@ export function Sidebar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
-            className="fixed inset-0 bg-black/50 z-[60]"
+            onClick={onClose}
+            className="fixed inset-0 bg-black/50 z-[60] backdrop-blur-sm"
           />
         )}
       </AnimatePresence>
@@ -71,7 +68,7 @@ export function Sidebar() {
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed top-0 left-0 bottom-0 w-80 bg-white dark:bg-gray-800 z-[70] overflow-y-auto shadow-2xl"
+            className="fixed top-0 left-0 bottom-0 w-80 bg-[var(--surface)] border-r border-[var(--outline)] z-[70] overflow-y-auto shadow-soft-lg"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
@@ -86,12 +83,13 @@ export function Sidebar() {
                   </p>
                 </div>
               </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              <motion.button
+                onClick={onClose}
+                className="p-2 rounded-lg state-layer touch-target"
+                whileTap={{ scale: 0.95 }}
               >
-                <X size={24} className="text-gray-900 dark:text-gray-100" />
-              </button>
+                <X size={24} className="text-[var(--text-primary)]" />
+              </motion.button>
             </div>
 
             {/* Menu Items */}
@@ -105,10 +103,10 @@ export function Sidebar() {
                     key={item.id}
                     onClick={() => handleNavigate(item.path)}
                     className={cn(
-                      'w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-150 text-left',
+                      'w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-150 text-left state-layer touch-target',
                       isActive
-                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-semibold'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                        ? 'bg-[var(--sky)]/10 text-[var(--sky)] font-semibold'
+                        : 'text-[var(--text-primary)] hover:bg-[var(--surface-2)]'
                     )}
                   >
                     <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
