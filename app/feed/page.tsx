@@ -154,11 +154,11 @@ export default function FeedPage() {
                   <div className="flex gap-3">
                     {/* Double Avatar */}
                     <div className="relative">
-                      <div className="w-12 h-12 rounded-full bg-surface2-light dark:bg-surface2-dark flex items-center justify-center text-2xl">
-                        {post.author.avatar}
+                      <div className="w-12 h-12 rounded-full bg-[var(--md-sys-color-surface-variant)] flex items-center justify-center text-[var(--dog-sky)]">
+                        <PersonAvatar size={24} />
                       </div>
-                      <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-honey border-2 border-white dark:border-surface-dark flex items-center justify-center text-sm">
-                        {post.author.dogAvatar}
+                      <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[var(--dog-honey)] border-2 border-[var(--md-sys-color-surface)] flex items-center justify-center text-[var(--dog-chocolate)]">
+                        <DogAvatar size={16} />
                       </div>
                     </div>
                     <div>

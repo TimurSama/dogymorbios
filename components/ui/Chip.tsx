@@ -5,7 +5,7 @@ import { HTMLAttributes } from 'react'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-interface ChipProps extends Omit<HTMLAttributes<HTMLDivElement>,
+interface ChipProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>,
   'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart' | 'onAnimationEnd'
 > {
   label: string

@@ -45,21 +45,21 @@ export default function MapPage() {
   const [totalBoneCoinEarned, setTotalBoneCoinEarned] = useState(0)
   
   // Геолокация пользователя
-  const { position: userPosition, error: geoError } = useGeolocation({
+  const { position, error: geoError } = useGeolocation({
     enableHighAccuracy: true,
     timeout: 10000,
   })
+  const userPosition = position ? { lat: position.lat, lng: position.lng } : null
 
   // Система сбора призов
   const {
-    collectibles,
-    nearbyCollectibles,
+    collectibles: nearbyCollectibles,
     collect,
     collectedIds,
   } = useCollectibles({
-    userLat: userPosition?.lat,
-    userLng: userPosition?.lng,
-    radius: 500, // 500 метров
+    userLat: position?.lat,
+    userLng: position?.lng,
+    radius: 50, // 50 метров
   })
 
   // Обработка сбора приза
@@ -123,30 +123,29 @@ export default function MapPage() {
           className="absolute inset-0"
         />
 
-          {/* Маркеры на карте */}
-          {filteredMarkers.map((marker, index) => (
-            <motion.div
-              key={marker.id}
-              className="absolute"
-              style={{
-                left: `${20 + index * 15}%`,
-                top: `${30 + (index % 3) * 20}%`,
-              }}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <div className="relative">
-                <div className="bg-white dark:bg-surface-dark rounded-full p-2 elevation-2">
-                  {getMarkerIcon(marker.type)}
-                </div>
-                {marker.online && (
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-success rounded-full border-2 border-white dark:border-surface-dark" />
-                )}
+        {/* Маркеры на карте */}
+        {filteredMarkers.map((marker, index) => (
+          <motion.div
+            key={marker.id}
+            className="absolute z-10"
+            style={{
+              left: `${20 + index * 15}%`,
+              top: `${30 + (index % 3) * 20}%`,
+            }}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: index * 0.1 }}
+          >
+            <div className="relative">
+              <div className="bg-[var(--md-sys-color-surface)] rounded-full p-2 elevation-2">
+                {getMarkerIcon(marker.type)}
               </div>
-            </motion.div>
-          ))}
-        </div>
+              {marker.online && (
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-[var(--dog-success)] rounded-full border-2 border-[var(--md-sys-color-surface)]" />
+              )}
+            </div>
+          </motion.div>
+        ))}
 
         {/* Категории фильтров - мобильная оптимизация */}
         <div className="absolute top-2 left-2 right-2 z-10 md:top-4 md:left-4 md:right-4">
@@ -190,7 +189,7 @@ export default function MapPage() {
               <CollectibleMarker
                 collectible={collectible}
                 onCollect={handleCollect}
-                distance={collectible.distance}
+                distance={(collectible as any).distance}
               />
             </div>
           )
@@ -203,10 +202,10 @@ export default function MapPage() {
             animate={{ opacity: 1, scale: 1 }}
             className="absolute top-20 left-1/2 -translate-x-1/2 z-20"
           >
-            <Card className="p-3 bg-[var(--honey)]/90 backdrop-blur-sm" elevation={3}>
+            <Card className="p-3 bg-[var(--dog-honey)]/90 backdrop-blur-sm" elevation={3}>
               <div className="flex items-center gap-2">
-                <Sparkles size={20} className="text-[var(--text-primary)]" />
-                <span className="text-body font-semibold text-[var(--text-primary)]">
+                <Sparkles size={20} className="text-[var(--md-sys-color-on-surface)]" />
+                <span className="text-body font-semibold text-[var(--md-sys-color-on-surface)]">
                   +{totalBoneCoinEarned} 🦴 собрано!
                 </span>
               </div>
@@ -229,8 +228,8 @@ export default function MapPage() {
         <div className="hidden md:block absolute right-4 top-24 z-10">
           <Card className="w-64 p-3" elevation={3}>
             <div className="flex items-center gap-2 mb-3">
-              <Users size={16} className="text-sky" />
-              <h4 className="text-body font-semibold text-text-primary-light dark:text-text-primary-dark">
+              <Users size={16} className="text-[var(--dog-sky)]" />
+              <h4 className="text-body font-semibold text-[var(--md-sys-color-on-surface)]">
                 Рядом с вами
               </h4>
             </div>
@@ -238,19 +237,19 @@ export default function MapPage() {
               {filteredMarkers.slice(0, 3).map((marker) => (
                 <div
                   key={marker.id}
-                  className="flex items-center gap-2 p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer transition-colors"
+                  className="flex items-center gap-2 p-2 rounded-lg hover:bg-[var(--md-state-hover)] cursor-pointer transition-colors state-layer"
                 >
                   {getMarkerIcon(marker.type)}
                   <div className="flex-1 min-w-0">
-                    <p className="text-caption font-medium text-text-primary-light dark:text-text-primary-dark truncate">
+                    <p className="text-caption font-medium text-[var(--md-sys-color-on-surface)] truncate">
                       {marker.name}
                     </p>
-                    <p className="text-caption text-text-secondary-light dark:text-text-secondary-dark">
+                    <p className="text-caption text-[var(--md-sys-color-on-surface-variant)]">
                       {marker.distance}
                     </p>
                   </div>
                   {marker.online && (
-                    <div className="w-2 h-2 bg-success rounded-full" />
+                    <div className="w-2 h-2 bg-[var(--dog-success)] rounded-full" />
                   )}
                 </div>
               ))}

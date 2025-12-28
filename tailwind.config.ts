@@ -10,40 +10,49 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Light theme
-        'bg-light': '#FFFFFF',
-        'surface-light': '#FAF8F5',
-        'surface2-light': '#F0ECE7',
-        'text-primary-light': '#1C1A19',
-        'text-secondary-light': '#58524D',
-        'line-light': '#D9D3CC',
-        'outline-light': '#B8AEA5',
+        // Material Design 3 Colors
+        'md-primary': 'var(--md-sys-color-primary)',
+        'md-on-primary': 'var(--md-sys-color-on-primary)',
+        'md-primary-container': 'var(--md-sys-color-primary-container)',
+        'md-on-primary-container': 'var(--md-sys-color-on-primary-container)',
+        'md-secondary': 'var(--md-sys-color-secondary)',
+        'md-on-secondary': 'var(--md-sys-color-on-secondary)',
+        'md-surface': 'var(--md-sys-color-surface)',
+        'md-on-surface': 'var(--md-sys-color-on-surface)',
+        'md-surface-variant': 'var(--md-sys-color-surface-variant)',
+        'md-on-surface-variant': 'var(--md-sys-color-on-surface-variant)',
+        'md-outline': 'var(--md-sys-color-outline)',
+        'md-outline-variant': 'var(--md-sys-color-outline-variant)',
+        'md-error': 'var(--md-sys-color-error)',
+        'md-on-error': 'var(--md-sys-color-on-error)',
         
-        // Dark theme
-        'bg-dark': '#2C2B29',
-        'surface-dark': '#1F1E1C',
-        'surface2-dark': '#3A3634',
-        'text-primary-dark': '#F5F4F2',
-        'text-secondary-dark': '#CFCAC5',
-        'line-dark': '#4A4542',
-        'outline-dark': '#665E58',
+        // Dogymorbis Brand Colors
+        'dog-sky': 'var(--dog-sky)',
+        'dog-honey': 'var(--dog-honey)',
+        'dog-burgundy': 'var(--dog-burgundy)',
+        'dog-chocolate': 'var(--dog-chocolate)',
+        'dog-success': 'var(--dog-success)',
+        'dog-warning': 'var(--dog-warning)',
+        'dog-danger': 'var(--dog-danger)',
+        'dog-info': 'var(--dog-info)',
         
-        // Accents - пастельные тона
-        'sky': '#AFCBFF',
-        'honey': '#E8DCA8',
-        'burgundy': '#A95056',
-        'chocolate': '#6B4B3E',
-        'success': '#86C8BC',
-        'warning': '#E1A177',
-        'danger': '#E57C73',
-        'info': '#7FA7D9',
-        // Дополнительные пастельные акценты
-        'pastel-pink': '#FFB3BA',
-        'pastel-lavender': '#BAE1FF',
-        'pastel-mint': '#BAFFC9',
-        'pastel-peach': '#FFDFBA',
-        'pastel-lilac': '#E6D5FF',
-        'pastel-rose': '#FFD1DC',
+        // Pastel Palette
+        'dog-pastel-pink': 'var(--dog-pastel-pink)',
+        'dog-pastel-lavender': 'var(--dog-pastel-lavender)',
+        'dog-pastel-mint': 'var(--dog-pastel-mint)',
+        'dog-pastel-peach': 'var(--dog-pastel-peach)',
+        'dog-pastel-lilac': 'var(--dog-pastel-lilac)',
+        'dog-pastel-rose': 'var(--dog-pastel-rose)',
+        
+        // Legacy compatibility
+        'sky': 'var(--dog-sky)',
+        'honey': 'var(--dog-honey)',
+        'burgundy': 'var(--dog-burgundy)',
+        'chocolate': 'var(--dog-chocolate)',
+        'success': 'var(--dog-success)',
+        'warning': 'var(--dog-warning)',
+        'danger': 'var(--dog-danger)',
+        'info': 'var(--dog-info)',
       },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui'],

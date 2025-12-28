@@ -88,17 +88,20 @@ export function MapView({
       })
 
       // Добавление маркеров
-      markers.forEach(marker => {
-        const mapMarker = new window.google.maps.Marker({
-          position: { lat: marker.lat, lng: marker.lng },
-          map: map,
-          title: marker.name,
-        })
+      if (window.google && window.google.maps) {
+        const googleMaps = window.google.maps
+        markers.forEach(marker => {
+          const mapMarker = new googleMaps.Marker({
+            position: { lat: marker.lat, lng: marker.lng },
+            map: map,
+            title: marker.name,
+          })
 
-        if (onMarkerClick) {
-          mapMarker.addListener('click', () => onMarkerClick(marker))
-        }
-      })
+          if (onMarkerClick) {
+            mapMarker.addListener('click', () => onMarkerClick(marker))
+          }
+        })
+      }
 
       setMapLoaded(true)
     }
@@ -141,7 +144,7 @@ export function MapView({
 declare global {
   interface Window {
     google?: {
-      maps: typeof google.maps
+      maps: any
     }
   }
 }
