@@ -39,18 +39,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             type={type}
             className={cn(
-              'w-full px-4 py-3 rounded-lg text-body',
-              'bg-[var(--md-sys-color-surface)]',
-              'text-[var(--md-sys-color-on-surface)]',
-              'border border-[var(--md-sys-color-outline-variant)]',
-              'placeholder:text-[var(--md-sys-color-on-surface-variant)]',
-              'focus:outline-none focus:ring-2 focus:ring-[var(--md-sys-color-primary)] focus:ring-opacity-50 focus:border-[var(--md-sys-color-primary)]',
+              'w-full px-4 py-3 plush-rounded-card text-body',
+              'bg-white text-plush-graphite',
+              'border border-plush-graphite/10',
+              'placeholder:text-plush-graphite/40',
+              'focus:outline-none focus:ring-2 focus:ring-plush-primary/30 focus:border-plush-primary',
               'transition-all duration-200',
               'disabled:opacity-50 disabled:cursor-not-allowed',
               'touch-target',
-              error && 'border-[var(--md-sys-color-error)] focus:ring-[var(--md-sys-color-error)]',
+              error && 'border-plush-alert focus:ring-plush-alert/30',
               icon && 'pl-10',
-              focused && 'elevation-1',
+              focused && 'plush-depth-1',
               className
             )}
             onFocus={() => setFocused(true)}
