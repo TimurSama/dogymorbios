@@ -2,66 +2,157 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Material Design 3 Expressive - Дизайн-токены Dogymorbis */
+/* Плюшевый неоморфизм - Дизайн-система Dogymorbis */
+/* Принцип: Мягкий объект в реальном свете (ткань, плюш, резиновая игрушка) */
 
 :root {
-  /* Light Theme - Material 3 Color System */
-  --md-sys-color-primary: #6750A4;
+  /* ============================================
+     БАЗОВАЯ ПАЛИТРА (основана на зрении собак)
+     ============================================ */
+  
+  /* Primary Blue - приглушённый, не электрический */
+  --plush-primary-blue: #2F5DFF;
+  --plush-primary-blue-pressed: #2548CC; /* темнее на 7% */
+  --plush-primary-blue-elevated: #3A6AFF; /* светлее на 4% */
+  
+  /* Soft Sky - для акцентов */
+  --plush-soft-sky: #A7C7FF;
+  --plush-soft-sky-pressed: #9BB8E6;
+  --plush-soft-sky-elevated: #B3D1FF;
+  
+  /* Warm Yellow - тёплый, матовый, без кислотности */
+  --plush-warm-yellow: #F4C542;
+  --plush-warm-yellow-pressed: #E5B63A;
+  --plush-warm-yellow-elevated: #F9D05A;
+  
+  /* Cream Sand - основной фон */
+  --plush-cream-sand: #F3E9D2;
+  --plush-cream-sand-pressed: #E8DCC0;
+  --plush-cream-sand-elevated: #F8F0E0;
+  
+  /* Graphite Dark - текст */
+  --plush-graphite-dark: #1F1F23;
+  --plush-graphite-dark-pressed: #18181B;
+  --plush-graphite-dark-elevated: #26262A;
+  
+  /* Soft Shadow - тени */
+  --plush-soft-shadow: #D6D6D6;
+  
+  /* Акцентная палитра */
+  --plush-deep-navy: #1C2E5E;
+  --plush-muted-brown: #8C6F4E;
+  --plush-soft-beige-fur: #E5D3B3;
+  
+  /* ALERT - только для экстренных ситуаций */
+  --plush-alert-red: #D64545;
+  
+  /* ============================================
+     СИСТЕМА ГЛУБИНЫ (4 уровня)
+     ============================================ */
+  
+  /* Level 0 - Фон (без тени) */
+  --plush-depth-0: none;
+  
+  /* Level 1 - Карточки */
+  /* Формула объёма: внешняя светлая тень + внешняя тёмная тень + внутренний градиент */
+  --plush-depth-1-light: 0px 4px 20px rgba(255, 255, 255, 0.3);
+  --plush-depth-1-dark: 0px 4px 20px rgba(0, 0, 0, 0.08);
+  --plush-depth-1: var(--plush-depth-1-light), var(--plush-depth-1-dark);
+  
+  /* Level 2 - Активные кнопки */
+  --plush-depth-2-light: 0px 6px 30px rgba(255, 255, 255, 0.35);
+  --plush-depth-2-dark: 0px 6px 30px rgba(0, 0, 0, 0.10);
+  --plush-depth-2: var(--plush-depth-2-light), var(--plush-depth-2-dark);
+  
+  /* Level 3 - Модальные окна / Alert */
+  --plush-depth-3-light: 0px 8px 40px rgba(255, 255, 255, 0.4);
+  --plush-depth-3-dark: 0px 8px 40px rgba(0, 0, 0, 0.12);
+  --plush-depth-3: var(--plush-depth-3-light), var(--plush-depth-3-dark);
+  
+  /* Внутренние тени для эффекта вдавливания */
+  --plush-inset-light: inset 0px 2px 4px rgba(255, 255, 255, 0.5);
+  --plush-inset-dark: inset 0px 2px 4px rgba(0, 0, 0, 0.06);
+  --plush-inset: var(--plush-inset-light), var(--plush-inset-dark);
+  
+  /* ============================================
+     ОСВЕЩЕНИЕ (источник света сверху слева)
+     ============================================ */
+  --plush-light-source-x: -4px;
+  --plush-light-source-y: -4px;
+  
+  /* ============================================
+     СКРУГЛЕНИЯ
+     ============================================ */
+  --plush-radius-min: 16px;
+  --plush-radius-card: 20px;
+  --plush-radius-card-large: 24px;
+  --plush-radius-button: 9999px; /* pill shape */
+  
+  /* ============================================
+     ТИПОГРАФИКА (геометрический гротеск с мягкими формами)
+     ============================================ */
+  --plush-font-family: 'Inter', 'Manrope', 'SF Pro Rounded', ui-sans-serif, system-ui;
+  
+  --plush-h1-size: 32px;
+  --plush-h1-weight: 600;
+  --plush-h1-line-height: 40px;
+  
+  --plush-h2-size: 22px;
+  --plush-h2-weight: 500;
+  --plush-h2-line-height: 28px;
+  
+  --plush-body-size: 16px;
+  --plush-body-weight: 400;
+  --plush-body-line-height: 24px;
+  
+  --plush-caption-size: 13px;
+  --plush-caption-weight: 400;
+  --plush-caption-line-height: 18px;
+  
+  /* ============================================
+     ПРОСТРАНСТВО И ВОЗДУХ
+     ============================================ */
+  --plush-spacing-base: 8px;
+  --plush-spacing-card: 24px;
+  --plush-spacing-block: 32px;
+  
+  /* ============================================
+     АНИМАЦИИ (тактильные, премиальные)
+     ============================================ */
+  --plush-animation-duration: 200ms;
+  --plush-animation-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* ============================================
+     МИКРО-ТЕКСТУРА (для эффекта плюша)
+     ============================================ */
+  --plush-texture-opacity: 0.025;
+  
+  /* ============================================
+     LEGACY (для совместимости)
+     ============================================ */
+  --md-sys-color-primary: var(--plush-primary-blue);
   --md-sys-color-on-primary: #FFFFFF;
-  --md-sys-color-primary-container: #EADDFF;
-  --md-sys-color-on-primary-container: #21005D;
+  --md-sys-color-surface: var(--plush-cream-sand);
+  --md-sys-color-on-surface: var(--plush-graphite-dark);
+  --md-sys-color-background: var(--plush-cream-sand);
+  --md-sys-color-on-background: var(--plush-graphite-dark);
   
-  --md-sys-color-secondary: #625B71;
-  --md-sys-color-on-secondary: #FFFFFF;
-  --md-sys-color-secondary-container: #E8DEF8;
-  --md-sys-color-on-secondary-container: #1D192B;
-  
-  --md-sys-color-tertiary: #7D5260;
-  --md-sys-color-on-tertiary: #FFFFFF;
-  --md-sys-color-tertiary-container: #FFD8E4;
-  --md-sys-color-on-tertiary-container: #31111D;
-  
-  --md-sys-color-error: #BA1A1A;
-  --md-sys-color-on-error: #FFFFFF;
-  --md-sys-color-error-container: #FFDAD6;
-  --md-sys-color-on-error-container: #410002;
-  
-  --md-sys-color-surface: #FFFBFE;
-  --md-sys-color-on-surface: #1C1B1F;
-  --md-sys-color-surface-variant: #E7E0EC;
-  --md-sys-color-on-surface-variant: #49454F;
-  
-  --md-sys-color-outline: #79747E;
-  --md-sys-color-outline-variant: #CAC4D0;
-  
-  --md-sys-color-background: #FFFBFE;
-  --md-sys-color-on-background: #1C1B1F;
-  
-  /* Dogymorbis Brand Colors - Pastel Accents */
-  --dog-sky: #AFCBFF;
-  --dog-honey: #E8DCA8;
+  /* Dogymorbis Brand Colors - для совместимости */
+  --dog-sky: var(--plush-soft-sky);
+  --dog-honey: var(--plush-warm-yellow);
   --dog-burgundy: #A95056;
-  --dog-chocolate: #6B4B3E;
+  --dog-chocolate: var(--plush-muted-brown);
   --dog-success: #86C8BC;
   --dog-warning: #E1A177;
-  --dog-danger: #E57C73;
+  --dog-danger: var(--plush-alert-red);
   --dog-info: #7FA7D9;
   
-  /* Pastel Palette */
-  --dog-pastel-pink: #FFB3BA;
-  --dog-pastel-lavender: #BAE1FF;
-  --dog-pastel-mint: #BAFFC9;
-  --dog-pastel-peach: #FFDFBA;
-  --dog-pastel-lilac: #E6D5FF;
-  --dog-pastel-rose: #FFD1DC;
-  
   /* Elevation - Material 3 */
-  --md-elevation-level0: none;
-  --md-elevation-level1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-  --md-elevation-level2: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
-  --md-elevation-level3: 0px 1px 3px 0px rgba(0, 0, 0, 0.3), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
-  --md-elevation-level4: 0px 2px 3px 0px rgba(0, 0, 0, 0.3), 0px 6px 10px 4px rgba(0, 0, 0, 0.15);
-  --md-elevation-level5: 0px 4px 4px 0px rgba(0, 0, 0, 0.3), 0px 8px 12px 6px rgba(0, 0, 0, 0.15);
+  /* Legacy elevation для совместимости */
+  --md-elevation-level0: var(--plush-depth-0);
+  --md-elevation-level1: var(--plush-depth-1);
+  --md-elevation-level2: var(--plush-depth-2);
+  --md-elevation-level3: var(--plush-depth-3);
   
   /* State Layer */
   --md-state-hover: rgba(28, 27, 31, 0.08);
@@ -163,23 +254,35 @@
   --md-state-drag: rgba(230, 225, 229, 0.16);
 }
 
-/* Микрошум текстура */
+/* ============================================
+   БАЗОВЫЕ СТИЛИ С МИКРО-ТЕКСТУРОЙ
+   ============================================ */
 body {
-  background-color: var(--md-sys-color-background);
-  color: var(--md-sys-color-on-surface);
-  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.5' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+  background-color: var(--plush-cream-sand);
+  color: var(--plush-graphite-dark);
+  font-family: var(--plush-font-family);
+  
+  /* Микро-текстура для эффекта плюша */
+  background-image: 
+    /* Радиальный градиент для мягкости */
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+    /* Noise overlay для текстуры */
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+  
   background-attachment: fixed;
-  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-              color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background-size: 100% 100%, 100% 100%, 200px 200px;
+  transition: background-color var(--plush-animation-duration) var(--plush-animation-timing), 
+              color var(--plush-animation-duration) var(--plush-animation-timing);
 }
 
-/* Material 3 Motion - Expressive */
+/* ============================================
+   ПЛЮШЕВЫЕ АНИМАЦИИ (тактильные, премиальные)
+   ============================================ */
 * {
   transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
+  transition-timing-function: var(--plush-animation-timing);
+  transition-duration: var(--plush-animation-duration);
 }
 
 /* Оптимизация для GPU */
@@ -209,111 +312,188 @@ body {
   }
   
   h1 {
-    font-size: var(--md-sys-typescale-display-large-size);
-    font-weight: var(--md-sys-typescale-display-large-weight);
-    line-height: var(--md-sys-typescale-display-large-line-height);
-    letter-spacing: var(--md-sys-typescale-display-large-tracking);
+    font-size: var(--plush-h1-size);
+    font-weight: var(--plush-h1-weight);
+    line-height: var(--plush-h1-line-height);
   }
   
   h2 {
-    font-size: var(--md-sys-typescale-headline-large-size);
-    font-weight: var(--md-sys-typescale-headline-large-weight);
-    line-height: var(--md-sys-typescale-headline-large-line-height);
+    font-size: var(--plush-h2-size);
+    font-weight: var(--plush-h2-weight);
+    line-height: var(--plush-h2-line-height);
   }
   
   h3 {
-    font-size: var(--md-sys-typescale-title-large-size);
-    font-weight: var(--md-sys-typescale-title-large-weight);
-    line-height: var(--md-sys-typescale-title-large-line-height);
+    font-size: var(--plush-h2-size);
+    font-weight: var(--plush-h2-weight);
+    line-height: var(--plush-h2-line-height);
   }
   
   p {
-    font-size: var(--md-sys-typescale-body-large-size);
-    font-weight: var(--md-sys-typescale-body-large-weight);
-    line-height: var(--md-sys-typescale-body-large-line-height);
-    letter-spacing: var(--md-sys-typescale-body-large-tracking);
+    font-size: var(--plush-body-size);
+    font-weight: var(--plush-body-weight);
+    line-height: var(--plush-body-line-height);
   }
   
   small {
-    font-size: var(--md-sys-typescale-label-large-size);
-    font-weight: var(--md-sys-typescale-label-large-weight);
-    line-height: var(--md-sys-typescale-label-large-line-height);
-    letter-spacing: var(--md-sys-typescale-label-large-tracking);
+    font-size: var(--plush-caption-size);
+    font-weight: var(--plush-caption-weight);
+    line-height: var(--plush-caption-line-height);
   }
 }
 
-/* Компонентные утилиты - Material 3 */
+/* ============================================
+   КОМПОНЕНТНЫЕ УТИЛИТЫ - ПЛЮШЕВЫЙ НЕОМОРФИЗМ
+   ============================================ */
 @layer components {
-  /* State Layer */
-  .state-layer {
-    @apply relative overflow-hidden;
+  /* ============================================
+     СИСТЕМА ГЛУБИНЫ (4 уровня)
+     ============================================ */
+  .plush-depth-0 {
+    box-shadow: var(--plush-depth-0);
   }
   
-  .state-layer::before {
-    content: '';
-    @apply absolute inset-0 opacity-0 transition-opacity duration-200 pointer-events-none;
-    background-color: var(--md-state-hover);
+  .plush-depth-1 {
+    box-shadow: var(--plush-depth-1);
+    border-radius: var(--plush-radius-card);
   }
   
-  .state-layer:hover::before {
-    @apply opacity-100;
+  .plush-depth-2 {
+    box-shadow: var(--plush-depth-2);
+    border-radius: var(--plush-radius-card);
   }
   
-  .state-layer:active::before {
-    background-color: var(--md-state-pressed);
+  .plush-depth-3 {
+    box-shadow: var(--plush-depth-3);
+    border-radius: var(--plush-radius-card-large);
   }
   
-  .state-layer:focus-visible::before {
-    background-color: var(--md-state-focus);
+  /* Внутренняя тень для эффекта вдавливания */
+  .plush-inset {
+    box-shadow: var(--plush-inset);
   }
   
-  /* Touch Target - минимум 48x48px для Material 3 */
+  /* ============================================
+     СКРУГЛЕНИЯ
+     ============================================ */
+  .plush-rounded {
+    border-radius: var(--plush-radius-min);
+  }
+  
+  .plush-rounded-card {
+    border-radius: var(--plush-radius-card);
+  }
+  
+  .plush-rounded-card-large {
+    border-radius: var(--plush-radius-card-large);
+  }
+  
+  .plush-rounded-pill {
+    border-radius: var(--plush-radius-button);
+  }
+  
+  /* ============================================
+     ТАКТИЛЬНЫЕ АНИМАЦИИ
+     ============================================ */
+  /* Вдавливание при нажатии */
+  .plush-press {
+    transition: transform var(--plush-animation-duration) var(--plush-animation-timing),
+                box-shadow var(--plush-animation-duration) var(--plush-animation-timing);
+  }
+  
+  .plush-press:active {
+    transform: scale(0.97);
+    box-shadow: var(--plush-inset);
+  }
+  
+  /* Подпрыгивание (для косточек, наград) */
+  .plush-bounce {
+    animation: plushBounce 250ms var(--plush-animation-timing);
+  }
+  
+  @keyframes plushBounce {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.08);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  /* Плавное увеличение */
+  .plush-grow {
+    animation: plushGrow 200ms var(--plush-animation-timing);
+  }
+  
+  @keyframes plushGrow {
+    0% {
+      transform: scale(0.95);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  /* ============================================
+     ВНУТРЕННИЙ ГРАДИЕНТ (для объёма)
+     ============================================ */
+  .plush-gradient {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.04) 0%,
+      rgba(0, 0, 0, 0.02) 100%
+    );
+  }
+  
+  /* ============================================
+     ПРОСТРАНСТВО И ВОЗДУХ
+     ============================================ */
+  .plush-spacing-card {
+    padding: var(--plush-spacing-card);
+  }
+  
+  .plush-spacing-block {
+    margin-bottom: var(--plush-spacing-block);
+  }
+  
+  /* ============================================
+     TOUCH TARGET (минимум 48x48px)
+     ============================================ */
   .touch-target {
     min-width: 48px;
     min-height: 48px;
   }
   
-  /* Material 3 Elevation */
+  /* ============================================
+     LEGACY (для совместимости)
+     ============================================ */
   .elevation-0 {
-    box-shadow: var(--md-elevation-level0);
+    box-shadow: var(--plush-depth-0);
   }
   
   .elevation-1 {
-    box-shadow: var(--md-elevation-level1);
+    box-shadow: var(--plush-depth-1);
   }
   
   .elevation-2 {
-    box-shadow: var(--md-elevation-level2);
+    box-shadow: var(--plush-depth-2);
   }
   
   .elevation-3 {
-    box-shadow: var(--md-elevation-level3);
+    box-shadow: var(--plush-depth-3);
   }
   
-  .elevation-4 {
-    box-shadow: var(--md-elevation-level4);
-  }
-  
-  .elevation-5 {
-    box-shadow: var(--md-elevation-level5);
-  }
-  
-  /* Soft shadows для пастельного дизайна */
-  .shadow-soft {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
-  }
-  
-  .shadow-soft-lg {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10), 0 2px 6px rgba(0, 0, 0, 0.08);
-  }
-  
-  /* Tap compression animation */
   .tap-compress {
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform var(--plush-animation-duration) var(--plush-animation-timing);
   }
   
   .tap-compress:active {
-    transform: scale(0.98);
+    transform: scale(0.97);
   }
   
   /* Safe Area для мобильных устройств */

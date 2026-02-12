@@ -10,23 +10,44 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Material Design 3 Colors
+        // Плюшевый неоморфизм - Основные цвета
+        'plush-primary': {
+          DEFAULT: 'var(--plush-primary-blue)',
+          pressed: 'var(--plush-primary-blue-pressed)',
+          elevated: 'var(--plush-primary-blue-elevated)',
+        },
+        'plush-sky': {
+          DEFAULT: 'var(--plush-soft-sky)',
+          pressed: 'var(--plush-soft-sky-pressed)',
+          elevated: 'var(--plush-soft-sky-elevated)',
+        },
+        'plush-yellow': {
+          DEFAULT: 'var(--plush-warm-yellow)',
+          pressed: 'var(--plush-warm-yellow-pressed)',
+          elevated: 'var(--plush-warm-yellow-elevated)',
+        },
+        'plush-cream': {
+          DEFAULT: 'var(--plush-cream-sand)',
+          pressed: 'var(--plush-cream-sand-pressed)',
+          elevated: 'var(--plush-cream-sand-elevated)',
+        },
+        'plush-graphite': {
+          DEFAULT: 'var(--plush-graphite-dark)',
+          pressed: 'var(--plush-graphite-dark-pressed)',
+          elevated: 'var(--plush-graphite-dark-elevated)',
+        },
+        'plush-navy': 'var(--plush-deep-navy)',
+        'plush-brown': 'var(--plush-muted-brown)',
+        'plush-beige': 'var(--plush-soft-beige-fur)',
+        'plush-alert': 'var(--plush-alert-red)',
+        
+        // Material Design 3 Colors (legacy)
         'md-primary': 'var(--md-sys-color-primary)',
         'md-on-primary': 'var(--md-sys-color-on-primary)',
-        'md-primary-container': 'var(--md-sys-color-primary-container)',
-        'md-on-primary-container': 'var(--md-sys-color-on-primary-container)',
-        'md-secondary': 'var(--md-sys-color-secondary)',
-        'md-on-secondary': 'var(--md-sys-color-on-secondary)',
         'md-surface': 'var(--md-sys-color-surface)',
         'md-on-surface': 'var(--md-sys-color-on-surface)',
-        'md-surface-variant': 'var(--md-sys-color-surface-variant)',
-        'md-on-surface-variant': 'var(--md-sys-color-on-surface-variant)',
-        'md-outline': 'var(--md-sys-color-outline)',
-        'md-outline-variant': 'var(--md-sys-color-outline-variant)',
-        'md-error': 'var(--md-sys-color-error)',
-        'md-on-error': 'var(--md-sys-color-on-error)',
         
-        // Dogymorbis Brand Colors
+        // Dogymorbis Brand Colors (legacy compatibility)
         'dog-sky': 'var(--dog-sky)',
         'dog-honey': 'var(--dog-honey)',
         'dog-burgundy': 'var(--dog-burgundy)',
@@ -35,14 +56,6 @@ const config: Config = {
         'dog-warning': 'var(--dog-warning)',
         'dog-danger': 'var(--dog-danger)',
         'dog-info': 'var(--dog-info)',
-        
-        // Pastel Palette
-        'dog-pastel-pink': 'var(--dog-pastel-pink)',
-        'dog-pastel-lavender': 'var(--dog-pastel-lavender)',
-        'dog-pastel-mint': 'var(--dog-pastel-mint)',
-        'dog-pastel-peach': 'var(--dog-pastel-peach)',
-        'dog-pastel-lilac': 'var(--dog-pastel-lilac)',
-        'dog-pastel-rose': 'var(--dog-pastel-rose)',
         
         // Legacy compatibility
         'sky': 'var(--dog-sky)',
@@ -55,7 +68,10 @@ const config: Config = {
         'info': 'var(--dog-info)',
       },
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+        sans: ['Inter', 'Manrope', 'SF Pro Rounded', 'ui-sans-serif', 'system-ui'],
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
       fontSize: {
         'caption': ['12px', { lineHeight: '16px' }],
@@ -71,15 +87,24 @@ const config: Config = {
         'xl': '16px',
         '2xl': '20px',
         '3xl': '24px',
+        'plush': 'var(--plush-radius-min)',
+        'plush-card': 'var(--plush-radius-card)',
+        'plush-card-lg': 'var(--plush-radius-card-large)',
+        'plush-pill': 'var(--plush-radius-button)',
       },
       spacing: {
         'touch': '44px', // Минимальный размер touch-зоны
       },
       boxShadow: {
+        'plush-0': 'var(--plush-depth-0)',
+        'plush-1': 'var(--plush-depth-1)',
+        'plush-2': 'var(--plush-depth-2)',
+        'plush-3': 'var(--plush-depth-3)',
+        'plush-inset': 'var(--plush-inset)',
         'elev0': '0 0 0 1px var(--outline)',
-        'elev1': '0 2px 4px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04), 0 0 0 1px var(--outline)',
-        'elev2': '0 4px 8px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.06), 0 0 0 1px var(--outline)',
-        'elev3': '0 8px 16px rgba(0,0,0,.10), 0 4px 8px rgba(0,0,0,.08), 0 0 0 1px var(--outline)',
+        'elev1': 'var(--plush-depth-1)',
+        'elev2': 'var(--plush-depth-2)',
+        'elev3': 'var(--plush-depth-3)',
         'soft': '0 2px 8px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.06)',
         'soft-lg': '0 4px 16px rgba(0,0,0,.10), 0 2px 6px rgba(0,0,0,.08)',
       },
@@ -90,6 +115,8 @@ const config: Config = {
         'slide-up': 'slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
         'spring-in': 'springIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
         'pulse-soft': 'pulseSoft 2s ease-in-out infinite',
+        'plush-bounce': 'plushBounce 250ms cubic-bezier(0.4, 0, 0.2, 1)',
+        'plush-grow': 'plushGrow 200ms cubic-bezier(0.4, 0, 0.2, 1)',
       },
       keyframes: {
         fadeIn: {
@@ -108,6 +135,15 @@ const config: Config = {
         pulseSoft: {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0.7' },
+        },
+        plushBounce: {
+          '0%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.08)' },
+          '100%': { transform: 'scale(1)' },
+        },
+        plushGrow: {
+          '0%': { transform: 'scale(0.95)', opacity: '0.8' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
         },
       },
     },
