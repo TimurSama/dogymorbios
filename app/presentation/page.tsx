@@ -75,6 +75,46 @@ const generalSlides = [
     gradient: 'from-sky to-burgundy',
   },
   {
+    id: 5.5,
+    title: 'Экономика проекта',
+    subtitle: 'Расчёты и прогнозы',
+    calculations: {
+      revenue: [
+        { year: '2025', users: '10K', mrr: '$10K', arr: '$120K', streams: [
+          { name: 'Подписки', amount: '$36K' },
+          { name: 'Маркетплейс', amount: '$48K' },
+          { name: 'Реклама', amount: '$24K' },
+          { name: 'BoneCoin', amount: '$12K' },
+        ]},
+        { year: '2026', users: '100K', mrr: '$100K', arr: '$1.2M', streams: [
+          { name: 'Подписки', amount: '$360K' },
+          { name: 'Маркетплейс', amount: '$480K' },
+          { name: 'Реклама', amount: '$240K' },
+          { name: 'BoneCoin', amount: '$120K' },
+        ]},
+        { year: '2027', users: '500K', mrr: '$500K', arr: '$6M', streams: [
+          { name: 'Подписки', amount: '$1.8M' },
+          { name: 'Маркетплейс', amount: '$2.4M' },
+          { name: 'Реклама', amount: '$1.2M' },
+          { name: 'BoneCoin', amount: '$600K' },
+        ]},
+      ],
+      unitEconomics: {
+        cac: '$15',
+        ltv: '$180',
+        ltvCac: '12:1',
+        payback: '2 месяца',
+        churn: '5%',
+      },
+      monetization: {
+        subscriptions: { free: '70%', premium: '30%', price: '$9.99/мес' },
+        marketplace: { commission: '10%', avgOrder: '$50', ordersPerUser: '2/мес' },
+        advertising: { cpm: '$5', impressions: '1000/user/мес' },
+      },
+    },
+    gradient: 'from-success to-honey',
+  },
+  {
     id: 6,
     title: 'Дорожная карта',
     subtitle: '2025-2026',
@@ -378,6 +418,112 @@ export default function PresentationPage() {
                           </p>
                         </motion.div>
                       ))}
+                    </div>
+                  )}
+
+                  {/* Calculations */}
+                  {('calculations' in slide) && slide.calculations && (
+                    <div className="space-y-6">
+                      {/* Revenue Forecast */}
+                      {slide.calculations.revenue && (
+                        <div>
+                          <h3 className="text-label font-bold text-text-primary-light dark:text-text-primary-dark mb-4">
+                            Прогноз доходов
+                          </h3>
+                          <div className="grid md:grid-cols-3 gap-4">
+                            {slide.calculations.revenue.map((year: any, i: number) => (
+                              <motion.div
+                                key={i}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: i * 0.15 }}
+                                className="p-4 bg-surface2-light dark:bg-surface2-dark rounded-lg"
+                              >
+                                <h4 className="text-body font-bold text-sky mb-2">{year.year}</h4>
+                                <p className="text-caption text-text-secondary-light dark:text-text-secondary-dark mb-1">
+                                  {year.users} пользователей
+                                </p>
+                                <p className="text-title font-bold text-success mb-3">{year.arr}</p>
+                                <div className="space-y-1">
+                                  {year.streams.map((stream: any, j: number) => (
+                                    <div key={j} className="flex justify-between text-caption">
+                                      <span className="text-text-secondary-light dark:text-text-secondary-dark">
+                                        {stream.name}
+                                      </span>
+                                      <span className="font-semibold text-text-primary-light dark:text-text-primary-dark">
+                                        {stream.amount}
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Unit Economics */}
+                      {slide.calculations.unitEconomics && (
+                        <div>
+                          <h3 className="text-label font-bold text-text-primary-light dark:text-text-primary-dark mb-4">
+                            Unit Economics
+                          </h3>
+                          <div className="grid md:grid-cols-3 gap-4">
+                            {Object.entries(slide.calculations.unitEconomics).map(([key, value]: [string, any], i: number) => (
+                              <motion.div
+                                key={i}
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: i * 0.1 }}
+                                className="p-4 bg-surface2-light dark:bg-surface2-dark rounded-lg text-center"
+                              >
+                                <p className="text-caption text-text-secondary-light dark:text-text-secondary-dark mb-1 capitalize">
+                                  {key.replace(/([A-Z])/g, ' $1').trim()}
+                                </p>
+                                <p className="text-title font-bold text-honey">{value}</p>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Monetization */}
+                      {slide.calculations.monetization && (
+                        <div>
+                          <h3 className="text-label font-bold text-text-primary-light dark:text-text-primary-dark mb-4">
+                            Монетизация
+                          </h3>
+                          <div className="space-y-4">
+                            {Object.entries(slide.calculations.monetization).map(([key, value]: [string, any], i: number) => (
+                              <motion.div
+                                key={i}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: i * 0.1 }}
+                                className="p-4 bg-surface2-light dark:bg-surface2-dark rounded-lg"
+                              >
+                                <h4 className="text-body font-bold text-text-primary-light dark:text-text-primary-dark mb-2 capitalize">
+                                  {key === 'subscriptions' ? 'Подписки' : key === 'marketplace' ? 'Маркетплейс' : 'Реклама'}
+                                </h4>
+                                {typeof value === 'object' && (
+                                  <div className="space-y-1 text-caption">
+                                    {Object.entries(value).map(([k, v]: [string, any]) => (
+                                      <div key={k} className="flex justify-between">
+                                        <span className="text-text-secondary-light dark:text-text-secondary-dark capitalize">
+                                          {k === 'free' ? 'Бесплатные' : k === 'premium' ? 'Премиум' : k === 'commission' ? 'Комиссия' : k === 'avgOrder' ? 'Средний чек' : k === 'ordersPerUser' ? 'Заказов/пользователь' : k === 'cpm' ? 'CPM' : k === 'impressions' ? 'Показов/пользователь' : k}
+                                        </span>
+                                        <span className="font-semibold text-text-primary-light dark:text-text-primary-dark">
+                                          {v}
+                                        </span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                              </motion.div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
 

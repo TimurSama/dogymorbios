@@ -83,7 +83,7 @@ export function BottomNav() {
                   isRed && isActive && 'bg-plush-alert'
                 )}
               >
-                {typeof Icon === 'function' ? (
+                {item.id === 'account' ? (
                   <Icon 
                     size={isCenter ? 28 : 24} 
                     strokeWidth={isActive ? 2.5 : 2}
