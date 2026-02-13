@@ -3,6 +3,13 @@
 import { useEffect, useRef } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import { 
+  createPawIcon, 
+  createBowlIcon, 
+  createDoublePawIcon, 
+  createUserPulseIcon,
+  createPrizeIcon 
+} from './CustomMarkers'
 
 interface LeafletMapProps {
   center: { lat: number; lng: number }
@@ -55,21 +62,30 @@ export function LeafletMap({
     })
     markersRef.current = []
 
-    // Добавление новых маркеров
+    // Добавление новых маркеров с кастомными иконками
     markers.forEach(marker => {
-      const icon = L.divIcon({
-        className: 'custom-marker',
-        html: `<div style="
-          width: 30px;
-          height: 30px;
-          background: #4A7DFF;
-          border-radius: 50%;
-          border: 3px solid white;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        "></div>`,
-        iconSize: [30, 30],
-        iconAnchor: [15, 15],
-      })
+      let icon
+      
+      // Выбор иконки в зависимости от типа маркера
+      switch (marker.type) {
+        case 'location':
+          icon = createPawIcon(32)
+          break
+        case 'store':
+          icon = createBowlIcon(32)
+          break
+        case 'user':
+          icon = createUserPulseIcon(40, true)
+          break
+        case 'event':
+          icon = createDoublePawIcon(36)
+          break
+        case 'prize':
+          icon = createPrizeIcon(28, 'common')
+          break
+        default:
+          icon = createPawIcon(32)
+      }
 
       const mapMarker = L.marker([marker.lat, marker.lng], { icon })
         .addTo(mapRef.current!)
@@ -78,7 +94,15 @@ export function LeafletMap({
         mapMarker.on('click', () => onMarkerClick(marker))
       }
 
-      mapMarker.bindPopup(marker.name)
+      mapMarker.bindPopup(`
+        <div style="
+          padding: 8px;
+          font-family: var(--plush-font-family);
+          color: var(--plush-graphite-dark);
+        ">
+          <strong>${marker.name}</strong>
+        </div>
+      `)
       markersRef.current.push(mapMarker)
     })
 
