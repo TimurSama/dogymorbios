@@ -596,6 +596,72 @@ body {
     }
   }
   
+  /* ============================================
+     АНИМАЦИИ ДЛЯ КОСТОЧЕК (BoneCoin)
+     ============================================ */
+  @keyframes boneBounce {
+    0%, 100% { 
+      transform: translateY(0) rotate(0deg); 
+    }
+    25% { 
+      transform: translateY(-4px) rotate(5deg); 
+    }
+    75% { 
+      transform: translateY(-2px) rotate(-5deg); 
+    }
+  }
+  
+  @keyframes bonePulse {
+    0%, 100% { 
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% { 
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes boneEarned {
+    0% {
+      transform: scale(0) rotate(-180deg);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.2) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1) rotate(0deg);
+      opacity: 1;
+    }
+  }
+
+  @keyframes boneGlow {
+    0%, 100% {
+      filter: drop-shadow(0 0 4px rgba(244, 197, 66, 0.5));
+    }
+    50% {
+      filter: drop-shadow(0 0 8px rgba(244, 197, 66, 0.8));
+    }
+  }
+
+  .bone-bounce {
+    animation: boneBounce 1s ease-in-out infinite;
+  }
+
+  .bone-pulse {
+    animation: bonePulse 2s ease-in-out infinite;
+  }
+
+  .bone-earned {
+    animation: boneEarned 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .bone-glow {
+    animation: boneGlow 2s ease-in-out infinite;
+  }
+  
   /* Оптимизация для мобильных */
   @media (max-width: 768px) {
     .fade-in,

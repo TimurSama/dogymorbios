@@ -7,6 +7,7 @@ import {
   TrendingUp, Award, Zap, Activity, BoneIcon as BoneIconLucide
 } from 'lucide-react'
 import { DoghouseIcon, BoneIcon, PawHeartIcon } from '@/components/icons/DogymorbisIcons'
+import { BoneCoin } from '@/components/ui/BoneCoin'
 import { SoftButton } from '@/components/ui/SoftButton'
 import { SoftCard } from '@/components/ui/SoftCard'
 import { AppBar } from '@/components/navigation/AppBar'
@@ -64,7 +65,7 @@ export default function DashboardPage() {
         {/* Статистика */}
         <div className="grid grid-cols-2 gap-4">
           {[
-            { label: 'Косточки', value: stats.bones, icon: BoneIcon, color: 'plush-yellow' },
+            { label: 'Косточки', value: stats.bones, icon: BoneIcon, color: 'plush-yellow', isBone: true },
             { label: 'Прогулки', value: stats.walks, icon: Map, color: 'plush-primary' },
             { label: 'Друзья', value: stats.friends, icon: Users, color: 'plush-sky' },
             { label: 'Достижения', value: stats.achievements, icon: Award, color: 'plush-alert' },
@@ -79,7 +80,11 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-plush-graphite/60 mb-1">{stat.label}</p>
-                    <p className="text-2xl font-bold text-plush-graphite">{stat.value}</p>
+                    {stat.isBone ? (
+                      <BoneCoin amount={stat.value} size="lg" animated />
+                    ) : (
+                      <p className="text-2xl font-bold text-plush-graphite">{stat.value}</p>
+                    )}
                   </div>
                   <stat.icon size={32} className={`text-${stat.color}`} />
                 </div>
