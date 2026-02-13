@@ -429,9 +429,18 @@ export default function LandingPage() {
             <div>
               <h4 className="font-semibold mb-4">Компания</h4>
               <ul className="space-y-2 text-sm text-white/70">
-                <li><a href="/presentation" className="hover:text-white">О проекте</a></li>
+                <li><a href="/about" className="hover:text-white">О проекте</a></li>
+                <li><a href="/investors" className="hover:text-white">Инвесторам</a></li>
                 <li><a href="/partner" className="hover:text-white">Партнёрам</a></li>
-                <li><a href="#" className="hover:text-white">Контакты</a></li>
+                <li><a href="/contact" className="hover:text-white">Контакты</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Поддержка</h4>
+              <ul className="space-y-2 text-sm text-white/70">
+                <li><a href="/help" className="hover:text-white">Помощь</a></li>
+                <li><a href="/presentation" className="hover:text-white">Презентация</a></li>
+                <li><a href="/presentation/detailed" className="hover:text-white">Детальная презентация</a></li>
               </ul>
             </div>
             <div>

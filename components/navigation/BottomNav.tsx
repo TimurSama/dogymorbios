@@ -17,6 +17,14 @@ export function BottomNav() {
   const pathname = usePathname()
   const router = useRouter()
 
+  // Скрываем навигацию на публичных страницах
+  const publicPages = ['/landing', '/register', '/partner-register', '/auth', '/presentation', '/presentation/detailed', '/about', '/investors', '/help', '/contact']
+  const isPublicPage = publicPages.some(page => pathname === page || pathname.startsWith(page))
+
+  if (isPublicPage) {
+    return null
+  }
+
   return (
     <nav className={cn(
       'fixed bottom-0 left-0 right-0 z-50',
