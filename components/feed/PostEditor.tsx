@@ -127,6 +127,7 @@ export function PostEditor({ onPublish, onCancel }: PostEditorProps) {
               >
                 {images.map((image, index) => (
                   <div key={index} className="relative group">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={URL.createObjectURL(image)}
                       alt={`Preview ${index + 1}`}

@@ -1,6 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
+// Отключаем SSR для страницы карты, так как Leaflet требует window
+export const dynamic = 'force-dynamic'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapPin, Navigation, Filter, Users, Calendar, Sparkles } from 'lucide-react'
 import { AppBar } from '@/components/navigation/AppBar'
@@ -9,7 +12,13 @@ import { Chip } from '@/components/ui/Chip'
 import { TreeIcon, BowlIcon, PawIcon } from '@/components/icons/DogymorbisIcons'
 import { WalkTracker } from '@/components/map/WalkTracker'
 import { CollectibleMarker } from '@/components/map/CollectibleMarker'
-import { LeafletMap } from '@/components/map/LeafletMap'
+import dynamic from 'next/dynamic'
+
+// Динамический импорт LeafletMap, чтобы избежать SSR
+const LeafletMap = dynamic(() => import('@/components/map/LeafletMap').then(mod => ({ default: mod.LeafletMap })), {
+  ssr: false,
+  loading: () => <div className="w-full h-full bg-plush-cream flex items-center justify-center">Загрузка карты...</div>
+})
 import { useGeolocation } from '@/hooks/useGeolocation'
 import { useCollectibles } from '@/hooks/useCollectibles'
 

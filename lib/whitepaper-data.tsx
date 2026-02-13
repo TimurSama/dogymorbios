@@ -10,6 +10,7 @@ import {
   Coins, BarChart3, Target, Calendar
 } from 'lucide-react'
 import { BoneIcon } from '@/components/icons/DogymorbisIcons'
+import { SoftCard } from '@/components/ui/SoftCard'
 
 export interface WhitepaperSection {
   id: string
