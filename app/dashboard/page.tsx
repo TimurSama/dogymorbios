@@ -11,6 +11,8 @@ import { BoneCoin } from '@/components/ui/BoneCoin'
 import { SoftButton } from '@/components/ui/SoftButton'
 import { SoftCard } from '@/components/ui/SoftCard'
 import { AppBar } from '@/components/navigation/AppBar'
+import { SimpleLineChart } from '@/components/charts/SimpleLineChart'
+import { ProgressBar } from '@/components/ui/ProgressBar'
 
 /**
  * Дашборд для авторизованных пользователей
@@ -175,6 +177,34 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* График активности */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.4 }}
+        >
+          <h2 className="text-xl font-semibold text-plush-graphite mb-4">
+            Активность за неделю
+          </h2>
+          <SoftCard depth={1} className="p-6">
+            <SimpleLineChart
+              data={[
+                { x: 1, y: 2, label: 'Пн' },
+                { x: 2, y: 3, label: 'Вт' },
+                { x: 3, y: 1, label: 'Ср' },
+                { x: 4, y: 4, label: 'Чт' },
+                { x: 5, y: 2, label: 'Пт' },
+                { x: 6, y: 3, label: 'Сб' },
+                { x: 7, y: 2, label: 'Вс' },
+              ]}
+              width={350}
+              height={150}
+              showArea
+              showDots
+            />
+          </SoftCard>
+        </motion.div>
+
         {/* Ежедневные задания */}
         <div>
           <h2 className="text-xl font-semibold text-plush-graphite mb-4">
@@ -183,23 +213,22 @@ export default function DashboardPage() {
           <SoftCard depth={1} className="p-6">
             <div className="space-y-4">
               {[
-                { task: 'Прогулка 30 минут', progress: 75, reward: 50 },
-                { task: 'Собрать 3 приза', progress: 66, reward: 30 },
-                { task: 'Опубликовать пост', progress: 0, reward: 20 },
+                { task: 'Прогулка 30 минут', progress: 75, max: 100, reward: 50 },
+                { task: 'Собрать 3 приза', progress: 2, max: 3, reward: 30 },
+                { task: 'Опубликовать пост', progress: 0, max: 1, reward: 20 },
               ].map((task, i) => (
                 <div key={i} className="space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-plush-graphite font-medium">{task.task}</span>
-                    <span className="text-plush-yellow font-semibold">+{task.reward} 🦴</span>
+                    <BoneCoin amount={task.reward} size="sm" />
                   </div>
-                  <div className="w-full bg-plush-cream-pressed rounded-full h-2">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${task.progress}%` }}
-                      transition={{ duration: 0.5, delay: i * 0.1 }}
-                      className="bg-plush-primary h-2 rounded-full"
-                    />
-                  </div>
+                  <ProgressBar
+                    value={task.progress}
+                    max={task.max}
+                    color="plush-primary"
+                    size="md"
+                    animated
+                  />
                 </div>
               ))}
             </div>

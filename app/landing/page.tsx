@@ -13,6 +13,7 @@ import { SoftButton } from '@/components/ui/SoftButton'
 import { SoftCard } from '@/components/ui/SoftCard'
 import { WhitepaperPopup } from '@/components/whitepaper/WhitepaperPopup'
 import { whitepaperSections, getRelatedSections } from '@/lib/whitepaper-data'
+import { BoneCoin } from '@/components/ui/BoneCoin'
 
 /**
  * Полноценный лендинг Dogymorbis
@@ -366,6 +367,395 @@ export default function LandingPage() {
                 </motion.div>
               ))}
           </div>
+        </div>
+      </section>
+
+      {/* Бизнес-модель */}
+      <section className="py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-plush-graphite mb-4">
+              Бизнес-модель
+            </h2>
+            <p className="text-xl text-plush-graphite/70">
+              Множественные источники дохода
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: DollarSign, title: 'Подписки', desc: 'Премиум-функции и AI-анализ', popupId: 'business-model' },
+              { icon: ShoppingBag, title: 'Маркетплейс', desc: 'Комиссия с продаж', popupId: 'business-model' },
+              { icon: TrendingUp, title: 'Реклама', desc: 'Таргетированная реклама', popupId: 'business-model' },
+              { icon: Zap, title: 'R&D', desc: 'Умные аксессуары и устройства', popupId: 'business-model' },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+              >
+                <SoftCard 
+                  depth={1} 
+                  interactive
+                  hover
+                  className="p-6 text-center cursor-pointer"
+                  onClick={() => item.popupId && handleOpenPopup(item.popupId)}
+                >
+                  <item.icon size={40} className="mx-auto mb-4 text-plush-primary" />
+                  <h3 className="text-lg font-semibold text-plush-graphite mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-plush-graphite/60 text-sm">
+                    {item.desc}
+                  </p>
+                </SoftCard>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Токеномика */}
+      <section className="py-20 px-4 bg-plush-cream-elevated">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-plush-graphite mb-4">
+              BoneCoin — внутренняя валюта
+            </h2>
+            <p className="text-xl text-plush-graphite/70">
+              Зарабатывайте и тратьте косточки
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <SoftCard depth={1} className="p-6">
+                <h3 className="text-xl font-semibold text-plush-graphite mb-4">
+                  Как заработать
+                </h3>
+                <ul className="space-y-3">
+                  {[
+                    'Прогулки и активность',
+                    'Выполнение заданий',
+                    'Социальная активность',
+                    'Стейкинг и участие в DAO',
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-center gap-3">
+                      <Check size={20} className="text-plush-primary" />
+                      <span className="text-plush-graphite">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </SoftCard>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <SoftCard depth={1} className="p-6">
+                <h3 className="text-xl font-semibold text-plush-graphite mb-4">
+                  Как потратить
+                </h3>
+                <ul className="space-y-3">
+                  {[
+                    'Покупки в маркетплейсе',
+                    'Премиум-подписки',
+                    'Умные аксессуары',
+                    'Участие в DAO',
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-center gap-3">
+                      <BoneIcon size={20} className="text-plush-yellow" />
+                      <span className="text-plush-graphite">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </SoftCard>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-8 text-center"
+          >
+            <SoftButton
+              variant="primary"
+              size="lg"
+              onClick={() => handleOpenPopup('tokenomics')}
+            >
+              Подробнее о токеномике
+            </SoftButton>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Дорожная карта */}
+      <section className="py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-plush-graphite mb-4">
+              Дорожная карта
+            </h2>
+            <p className="text-xl text-plush-graphite/70">
+              Наши планы на 2025-2026
+            </p>
+          </motion.div>
+
+          <div className="relative">
+            <div className="absolute left-8 top-0 bottom-0 w-1 bg-plush-primary/20 hidden md:block" />
+            <div className="space-y-8">
+              {[
+                { quarter: 'Q1 2025', title: 'Запуск MVP', desc: 'Основные функции и бета-тестирование' },
+                { quarter: 'Q2 2025', title: 'Маркетплейс', desc: 'Интеграция партнёров и торговля' },
+                { quarter: 'Q3 2025', title: 'DAO запуск', desc: 'Децентрализованное управление' },
+                { quarter: 'Q4 2025', title: 'Умные устройства', desc: 'Smart Collar и аксессуары' },
+              ].map((milestone, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="relative flex items-start gap-6"
+                >
+                  <div className="hidden md:block absolute left-6 w-4 h-4 rounded-full bg-plush-primary plush-depth-2 z-10" />
+                  <SoftCard depth={1} className="p-6 ml-16 md:ml-0 flex-1">
+                    <div className="flex items-center gap-4 mb-2">
+                      <span className="text-sm font-semibold text-plush-primary">
+                        {milestone.quarter}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-semibold text-plush-graphite mb-2">
+                      {milestone.title}
+                    </h3>
+                    <p className="text-plush-graphite/60">
+                      {milestone.desc}
+                    </p>
+                  </SoftCard>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-8 text-center"
+          >
+            <SoftButton
+              variant="primary"
+              size="lg"
+              onClick={() => handleOpenPopup('roadmap')}
+            >
+              Полная дорожная карта
+            </SoftButton>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Отзывы */}
+      <section className="py-20 px-4 bg-plush-cream-elevated">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-plush-graphite mb-4">
+              Что говорят пользователи
+            </h2>
+            <p className="text-xl text-plush-graphite/70">
+              Отзывы наших ранних пользователей
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { name: 'Анна', dog: 'Макс', text: 'Наконец-то всё в одном месте! Прогулки стали интереснее, а косточки мотивируют.', rating: 5 },
+              { name: 'Дмитрий', dog: 'Луна', text: 'Отличное сообщество единомышленников. Нашли много друзей для совместных прогулок.', rating: 5 },
+              { name: 'Мария', dog: 'Рекс', text: 'AI-анализ в журнале помог заметить проблемы со здоровьем раньше. Спасибо!', rating: 5 },
+            ].map((review, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+              >
+                <SoftCard depth={1} className="p-6 h-full">
+                  <div className="flex items-center gap-1 mb-4">
+                    {[...Array(review.rating)].map((_, j) => (
+                      <Star key={j} size={16} className="text-plush-yellow fill-plush-yellow" />
+                    ))}
+                  </div>
+                  <p className="text-plush-graphite mb-4 italic">
+                    "{review.text}"
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-plush-primary/10 flex items-center justify-center">
+                      <Users size={20} className="text-plush-primary" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-plush-graphite">{review.name}</p>
+                      <p className="text-sm text-plush-graphite/60">с {review.dog}</p>
+                    </div>
+                  </div>
+                </SoftCard>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Команда */}
+      <section className="py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-plush-graphite mb-4">
+              Наша команда
+            </h2>
+            <p className="text-xl text-plush-graphite/70">
+              Люди, которые делают Dogymorbis возможным
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { name: 'Команда разработки', role: 'Frontend, Backend, Mobile', icon: Zap },
+              { name: 'Команда дизайна', role: 'UI/UX, Брендинг', icon: Award },
+              { name: 'Команда бизнеса', role: 'Маркетинг, Партнёрства', icon: TrendingUp },
+            ].map((member, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+              >
+                <SoftCard depth={1} className="p-6 text-center">
+                  <div className="w-20 h-20 rounded-full bg-plush-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <member.icon size={40} className="text-plush-primary" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-plush-graphite mb-2">
+                    {member.name}
+                  </h3>
+                  <p className="text-plush-graphite/60 text-sm">
+                    {member.role}
+                  </p>
+                </SoftCard>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Инвестиции */}
+      <section className="py-20 px-4 bg-plush-cream-elevated">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-plush-graphite mb-4">
+              Инвестиционный план
+            </h2>
+            <p className="text-xl text-plush-graphite/70">
+              Присоединяйтесь к раунду инвестиций
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {[
+              { amount: '$500K', label: 'Seed Round', desc: 'MVP и запуск', popupId: 'investment' },
+              { amount: '$2M', label: 'Series A', desc: 'Масштабирование', popupId: 'investment' },
+              { amount: '$5M', label: 'Series B', desc: 'Международная экспансия', popupId: 'investment' },
+            ].map((round, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+              >
+                <SoftCard 
+                  depth={2} 
+                  interactive
+                  hover
+                  className="p-6 text-center cursor-pointer"
+                  onClick={() => round.popupId && handleOpenPopup(round.popupId)}
+                >
+                  <p className="text-3xl font-bold text-plush-primary mb-2">
+                    {round.amount}
+                  </p>
+                  <h3 className="text-lg font-semibold text-plush-graphite mb-2">
+                    {round.label}
+                  </h3>
+                  <p className="text-plush-graphite/60 text-sm">
+                    {round.desc}
+                  </p>
+                </SoftCard>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-center"
+          >
+            <SoftButton
+              variant="primary"
+              size="lg"
+              onClick={() => router.push('/investors')}
+            >
+              Узнать больше для инвесторов
+            </SoftButton>
+          </motion.div>
         </div>
       </section>
 

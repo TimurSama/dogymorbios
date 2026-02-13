@@ -11,6 +11,9 @@ import { SoftButton } from '@/components/ui/SoftButton'
 import { SoftCard } from '@/components/ui/SoftCard'
 import { WhitepaperPopup } from '@/components/whitepaper/WhitepaperPopup'
 import { whitepaperSections, getRelatedSections } from '@/lib/whitepaper-data'
+import { SimpleBarChart } from '@/components/charts/SimpleBarChart'
+import { SimpleLineChart } from '@/components/charts/SimpleLineChart'
+import { SimplePieChart } from '@/components/charts/SimplePieChart'
 
 /**
  * Детальная презентация для инвесторов и партнёров
@@ -142,11 +145,87 @@ export default function DetailedPresentationPage() {
             })}
           </div>
 
-          {/* Дополнительная информация */}
+          {/* Графики и визуализация */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
+            className="grid md:grid-cols-2 gap-6"
+          >
+            <SoftCard depth={1} className="p-6">
+              <h3 className="text-xl font-semibold text-plush-graphite mb-4">
+                Прогноз роста пользователей
+              </h3>
+              <SimpleLineChart
+                data={[
+                  { x: 1, y: 1000, label: 'Q1 2025' },
+                  { x: 2, y: 5000, label: 'Q2 2025' },
+                  { x: 3, y: 15000, label: 'Q3 2025' },
+                  { x: 4, y: 50000, label: 'Q4 2025' },
+                  { x: 5, y: 150000, label: 'Q1 2026' },
+                ]}
+                width={400}
+                height={200}
+                showArea
+                showDots
+              />
+            </SoftCard>
+
+            <SoftCard depth={1} className="p-6">
+              <h3 className="text-xl font-semibold text-plush-graphite mb-4">
+                Распределение доходов
+              </h3>
+              <SimplePieChart
+                data={[
+                  { label: 'Подписки', value: 40, color: 'var(--plush-primary)' },
+                  { label: 'Маркетплейс', value: 30, color: 'var(--plush-yellow)' },
+                  { label: 'Реклама', value: 20, color: 'var(--plush-sky)' },
+                  { label: 'R&D', value: 10, color: 'var(--plush-alert)' },
+                ]}
+                size={200}
+                showLegend
+              />
+            </SoftCard>
+
+            <SoftCard depth={1} className="p-6">
+              <h3 className="text-xl font-semibold text-plush-graphite mb-4">
+                Рост выручки по кварталам
+              </h3>
+              <SimpleBarChart
+                data={[
+                  { label: 'Q1', value: 50 },
+                  { label: 'Q2', value: 120 },
+                  { label: 'Q3', value: 250 },
+                  { label: 'Q4', value: 450 },
+                ]}
+                maxValue={500}
+                height={200}
+                showLabels
+              />
+            </SoftCard>
+
+            <SoftCard depth={1} className="p-6">
+              <h3 className="text-xl font-semibold text-plush-graphite mb-4">
+                Использование инвестиций
+              </h3>
+              <SimplePieChart
+                data={[
+                  { label: 'Разработка', value: 40, color: 'var(--plush-primary)' },
+                  { label: 'Маркетинг', value: 30, color: 'var(--plush-sky)' },
+                  { label: 'Операции', value: 20, color: 'var(--plush-yellow)' },
+                  { label: 'R&D', value: 10, color: 'var(--plush-alert)' },
+                ]}
+                size={200}
+                showLegend
+              />
+            </SoftCard>
+          </motion.div>
+
+          {/* Дополнительная информация */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
           >
             <SoftCard depth={1} className="p-6 bg-gradient-to-br from-plush-primary/10 to-plush-sky/10">
               <h3 className="text-xl font-semibold text-plush-graphite mb-4">
