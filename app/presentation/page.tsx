@@ -6,6 +6,7 @@ import {
   ChevronLeft, ChevronRight, Target, TrendingUp, Users, 
   DollarSign, Zap, Award, Heart, Globe, Rocket 
 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { AppBar } from '@/components/navigation/AppBar'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -210,7 +211,8 @@ const partnerSlides = [
 ]
 
 export default function PresentationPage() {
-  const [mode, setMode] = useState<'general' | 'partner'>('general')
+  const router = useRouter()
+  const [mode, setMode] = useState<'general' | 'partner' | 'detailed'>('general')
   const [currentSlide, setCurrentSlide] = useState(0)
   
   const slides = mode === 'general' ? generalSlides : partnerSlides
@@ -248,6 +250,13 @@ export default function PresentationPage() {
               onClick={() => { setMode('partner'); setCurrentSlide(0); }}
             >
               Партнёрская
+            </Button>
+            <Button 
+              variant={mode === 'detailed' ? 'primary' : 'ghost'} 
+              size="sm"
+              onClick={() => router.push('/presentation/detailed')}
+            >
+              Детальная
             </Button>
           </div>
         }

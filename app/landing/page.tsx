@@ -8,8 +8,11 @@ import {
   ArrowRight, Check, Star, Play
 } from 'lucide-react'
 import { DoghouseIcon, BoneIcon, PawHeartIcon } from '@/components/icons/DogymorbisIcons'
+import { useState } from 'react'
 import { SoftButton } from '@/components/ui/SoftButton'
 import { SoftCard } from '@/components/ui/SoftCard'
+import { WhitepaperPopup } from '@/components/whitepaper/WhitepaperPopup'
+import { whitepaperSections, getRelatedSections } from '@/lib/whitepaper-data'
 
 /**
  * Полноценный лендинг Dogymorbis
@@ -17,12 +20,25 @@ import { SoftCard } from '@/components/ui/SoftCard'
  */
 export default function LandingPage() {
   const router = useRouter()
+  const [openPopup, setOpenPopup] = useState<string | null>(null)
 
   // Статистика (mock данные)
   const stats = {
     users: '12,458',
     bones: '2,847,392',
     walks: '156,234'
+  }
+
+  const handleOpenPopup = (id: string) => {
+    setOpenPopup(id)
+  }
+
+  const handleClosePopup = () => {
+    setOpenPopup(null)
+  }
+
+  const handleOpenRelated = (id: string) => {
+    setOpenPopup(id)
   }
 
   return (
@@ -198,12 +214,12 @@ export default function LandingPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { icon: Map, title: 'Карта прогулок', desc: 'GPS-трекинг, маршруты, сбор призов', color: 'text-plush-primary' },
-              { icon: Users, title: 'Социальная сеть', desc: 'Посты, лайки, комментарии, друзья', color: 'text-plush-sky' },
-              { icon: BoneIcon, title: 'BoneCoin', desc: 'Внутренняя валюта за активность', color: 'text-plush-yellow' },
-              { icon: Heart, title: 'Умный дейтинг', desc: 'Combo-Match для владельцев и собак', color: 'text-plush-alert' },
-              { icon: BookOpen, title: 'Умный журнал', desc: 'AI-анализ здоровья и поведения', color: 'text-plush-sky' },
-              { icon: Building2, title: 'DAO управление', desc: 'Децентрализованное управление', color: 'text-plush-primary' },
+              { icon: Map, title: 'Карта прогулок', desc: 'GPS-трекинг, маршруты, сбор призов', color: 'text-plush-primary', popupId: 'ecosystem' },
+              { icon: Users, title: 'Социальная сеть', desc: 'Посты, лайки, комментарии, друзья', color: 'text-plush-sky', popupId: 'ecosystem' },
+              { icon: BoneIcon, title: 'BoneCoin', desc: 'Внутренняя валюта за активность', color: 'text-plush-yellow', popupId: 'tokenomics' },
+              { icon: Heart, title: 'Умный дейтинг', desc: 'Combo-Match для владельцев и собак', color: 'text-plush-alert', popupId: 'ecosystem' },
+              { icon: BookOpen, title: 'Умный журнал', desc: 'AI-анализ здоровья и поведения', color: 'text-plush-sky', popupId: 'ecosystem' },
+              { icon: Building2, title: 'DAO управление', desc: 'Децентрализованное управление', color: 'text-plush-primary', popupId: 'ecosystem' },
             ].map((feature, i) => (
               <motion.div
                 key={i}
@@ -212,14 +228,31 @@ export default function LandingPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
-                <SoftCard depth={1} interactive hover className="p-6 h-full">
+                <SoftCard 
+                  depth={1} 
+                  interactive 
+                  hover 
+                  className="p-6 h-full cursor-pointer"
+                  onClick={() => feature.popupId && handleOpenPopup(feature.popupId)}
+                >
                   <feature.icon size={48} className={`mb-4 ${feature.color}`} />
                   <h3 className="text-xl font-semibold text-plush-graphite mb-2">
                     {feature.title}
                   </h3>
-                  <p className="text-plush-graphite/60">
+                  <p className="text-plush-graphite/60 mb-3">
                     {feature.desc}
                   </p>
+                  <SoftButton
+                    variant="ghost"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      feature.popupId && handleOpenPopup(feature.popupId)
+                    }}
+                    className="w-full"
+                  >
+                    Подробнее
+                  </SoftButton>
                 </SoftCard>
               </motion.div>
             ))}
@@ -302,30 +335,36 @@ export default function LandingPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { value: '$152B', label: 'Объём рынка в 2024', icon: DollarSign },
-              { value: '$157B', label: 'Прогноз на 2025', icon: TrendingUp },
-              { value: '68M+', label: 'Домохозяйств с собаками в США', icon: Users },
-              { value: '400M+', label: 'Собак в мире', icon: Globe },
-            ].map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-              >
-                <SoftCard depth={2} className="p-8 text-center">
-                  <stat.icon size={48} className="mx-auto mb-4 text-plush-primary" />
-                  <p className="text-4xl font-bold text-plush-graphite mb-2">
-                    {stat.value}
-                  </p>
-                  <p className="text-plush-graphite/60">
-                    {stat.label}
-                  </p>
-                </SoftCard>
-              </motion.div>
-            ))}
+              {[
+                { value: '$152B', label: 'Объём рынка в 2024', icon: DollarSign, popupId: 'market' },
+                { value: '$157B', label: 'Прогноз на 2025', icon: TrendingUp, popupId: 'market' },
+                { value: '68M+', label: 'Домохозяйств с собаками в США', icon: Users, popupId: 'market' },
+                { value: '400M+', label: 'Собак в мире', icon: Globe, popupId: 'market' },
+              ].map((stat, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                >
+                  <SoftCard 
+                    depth={2} 
+                    interactive
+                    hover
+                    className="p-8 text-center cursor-pointer"
+                    onClick={() => stat.popupId && handleOpenPopup(stat.popupId)}
+                  >
+                    <stat.icon size={48} className="mx-auto mb-4 text-plush-primary" />
+                    <p className="text-4xl font-bold text-plush-graphite mb-2">
+                      {stat.value}
+                    </p>
+                    <p className="text-plush-graphite/60">
+                      {stat.label}
+                    </p>
+                  </SoftCard>
+                </motion.div>
+              ))}
           </div>
         </div>
       </section>
