@@ -1,9 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-
-// Отключаем SSR для страницы карты, так как Leaflet требует window
-export const dynamic = 'force-dynamic'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapPin, Navigation, Filter, Users, Calendar, Sparkles } from 'lucide-react'
 import { AppBar } from '@/components/navigation/AppBar'
