@@ -439,6 +439,7 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-4">Поддержка</h4>
               <ul className="space-y-2 text-sm text-white/70">
                 <li><a href="/help" className="hover:text-white">Помощь</a></li>
+                <li><a href="/whitepaper" className="hover:text-white">Вайтпэпер</a></li>
                 <li><a href="/presentation" className="hover:text-white">Презентация</a></li>
                 <li><a href="/presentation/detailed" className="hover:text-white">Детальная презентация</a></li>
               </ul>

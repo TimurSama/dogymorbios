@@ -1,222 +1,397 @@
 'use client'
 
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { 
-  User, Lock, Bell, Globe, Palette, Shield, 
-  Info, HelpCircle, LogOut, ChevronRight 
+  User, Bell, Lock, Shield, Palette, Globe, 
+  Mail, Smartphone, Trash2, LogOut, Save,
+  Eye, EyeOff, Moon, Sun
 } from 'lucide-react'
-import { AppBar } from '@/components/navigation/AppBar'
-import { Card } from '@/components/ui/Card'
-import { Button } from '@/components/ui/Button'
+import { SoftCard } from '@/components/ui/SoftCard'
+import { SoftButton } from '@/components/ui/SoftButton'
 import { Input } from '@/components/ui/Input'
-import { useTheme } from '@/components/ThemeProvider'
+import { AppBar } from '@/components/navigation/AppBar'
 
+/**
+ * Страница настроек
+ * Полная настройка аккаунта и приложения
+ */
 export default function SettingsPage() {
-  const { theme, toggleTheme } = useTheme()
-  const [notifications, setNotifications] = useState({
-    posts: true,
-    messages: true,
-    events: true,
-    dao: false,
-  })
+  const [activeTab, setActiveTab] = useState('profile')
+  const [showPassword, setShowPassword] = useState(false)
+  const [theme, setTheme] = useState<'light' | 'dark' | 'auto'>('light')
 
-  const settingsSections = [
-    {
-      title: 'Аккаунт',
-      icon: User,
-      items: [
-        { id: 'profile', label: 'Профиль', description: 'Имя, фото, биография' },
-        { id: 'pets', label: 'Питомцы', description: 'Управление питомцами' },
-        { id: 'privacy', label: 'Приватность', description: 'Кто может видеть ваш профиль' },
-      ],
-    },
-    {
-      title: 'Безопасность',
-      icon: Lock,
-      items: [
-        { id: 'password', label: 'Пароль', description: 'Изменить пароль' },
-        { id: '2fa', label: 'Двухфакторная аутентификация', description: 'Защита аккаунта' },
-        { id: 'sessions', label: 'Активные сеансы', description: 'Управление устройствами' },
-      ],
-    },
-    {
-      title: 'Уведомления',
-      icon: Bell,
-      items: [
-        { id: 'push', label: 'Push-уведомления', description: 'Настроить уведомления' },
-        { id: 'email', label: 'Email-рассылка', description: 'Новости и обновления' },
-      ],
-    },
-    {
-      title: 'Приложение',
-      icon: Palette,
-      items: [
-        { id: 'theme', label: 'Тема оформления', description: theme === 'light' ? 'Светлая' : 'Тёмная', action: toggleTheme },
-        { id: 'language', label: 'Язык', description: 'Русский' },
-      ],
-    },
-    {
-      title: 'Поддержка',
-      icon: HelpCircle,
-      items: [
-        { id: 'help', label: 'Справка', description: 'Часто задаваемые вопросы' },
-        { id: 'contact', label: 'Связаться с нами', description: 'Техподдержка' },
-        { id: 'about', label: 'О приложении', description: 'Версия 1.0.0' },
-      ],
-    },
+  const tabs = [
+    { id: 'profile', label: 'Профиль', icon: User },
+    { id: 'security', label: 'Безопасность', icon: Lock },
+    { id: 'notifications', label: 'Уведомления', icon: Bell },
+    { id: 'privacy', label: 'Приватность', icon: Shield },
+    { id: 'appearance', label: 'Внешний вид', icon: Palette },
+    { id: 'language', label: 'Язык', icon: Globe },
   ]
 
+  const [profileData, setProfileData] = useState({
+    name: 'Иван Иванов',
+    email: 'ivan@example.com',
+    phone: '+7 (999) 123-45-67',
+    bio: 'Люблю прогулки с собакой',
+  })
+
+  const [securityData, setSecurityData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+    twoFactorEnabled: false,
+  })
+
+  const [notifications, setNotifications] = useState({
+    push: true,
+    email: true,
+    sms: false,
+    newFollowers: true,
+    newMessages: true,
+    walkReminders: true,
+    eventReminders: true,
+  })
+
+  const [privacy, setPrivacy] = useState({
+    profileVisibility: 'public',
+    showLocation: true,
+    showWalkHistory: true,
+    allowMessages: 'everyone',
+  })
+
+  const handleSave = () => {
+    // Логика сохранения
+    console.log('Сохранение настроек')
+  }
+
   return (
-    <div className="flex flex-col h-screen">
-      <AppBar title="Настройки" showBack />
+    <div className="min-h-screen bg-plush-cream pb-20 safe-area-bottom">
+      <AppBar title="Настройки" />
 
-      <div className="flex-1 overflow-y-auto custom-scrollbar bg-background">
-        <div className="max-w-4xl mx-auto p-4 space-y-6">
-          {/* User Card */}
-          <Card className="p-6" elevation={2}>
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-gradient-sky flex items-center justify-center text-3xl">
-                👩
-              </div>
-              <div className="flex-1">
-                <h3 className="text-label font-bold text-text-primary-light dark:text-text-primary-dark">
-                  Анна Иванова
-                </h3>
-                <p className="text-body text-text-secondary-light dark:text-text-secondary-dark">
-                  @anna_dog_lover
-                </p>
-              </div>
-              <Button variant="secondary" size="sm">
-                Редактировать
-              </Button>
-            </div>
-          </Card>
+      <div className="px-4 py-6">
+        <div className="max-w-4xl mx-auto">
+          {/* Вкладки */}
+          <div className="flex gap-2 mb-6 overflow-x-auto custom-scrollbar">
+            {tabs.map((tab) => {
+              const Icon = tab.icon
+              const isActive = activeTab === tab.id
 
-          {/* Settings Sections */}
-          {settingsSections.map((section) => {
-            const Icon = section.icon
-            return (
-              <div key={section.title}>
-                <div className="flex items-center gap-2 mb-3 px-2">
-                  <Icon size={16} className="text-text-secondary-light dark:text-text-secondary-dark" />
-                  <h3 className="text-body font-semibold text-text-secondary-light dark:text-text-secondary-dark uppercase tracking-wide">
-                    {section.title}
-                  </h3>
+              return (
+                <motion.button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-plush-card whitespace-nowrap transition-all ${
+                    isActive
+                      ? 'bg-plush-primary text-white'
+                      : 'bg-white text-plush-graphite hover:bg-plush-cream-pressed'
+                  }`}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Icon size={20} />
+                  <span className="font-medium">{tab.label}</span>
+                </motion.button>
+              )
+            })}
+          </div>
+
+          {/* Контент вкладок */}
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {activeTab === 'profile' && (
+              <SoftCard depth={1} className="p-6 md:p-8">
+                <h2 className="text-2xl font-semibold text-plush-graphite mb-6">
+                  Профиль
+                </h2>
+                <div className="space-y-4">
+                  <Input
+                    label="Имя"
+                    value={profileData.name}
+                    onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
+                  />
+                  <Input
+                    label="Email"
+                    type="email"
+                    value={profileData.email}
+                    onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
+                  />
+                  <Input
+                    label="Телефон"
+                    type="tel"
+                    value={profileData.phone}
+                    onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
+                  />
+                  <div>
+                    <label className="block text-sm font-medium text-plush-graphite mb-2">
+                      О себе
+                    </label>
+                    <textarea
+                      value={profileData.bio}
+                      onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })}
+                      rows={4}
+                      className="w-full px-4 py-3 plush-rounded-card bg-white text-plush-graphite border border-plush-graphite/10 focus:outline-none focus:ring-2 focus:ring-plush-primary/30 focus:border-plush-primary transition-all resize-none"
+                    />
+                  </div>
+                  <SoftButton variant="primary" size="lg" onClick={handleSave} className="w-full">
+                    <Save size={20} className="mr-2" />
+                    Сохранить изменения
+                  </SoftButton>
                 </div>
-                <Card className="overflow-hidden" elevation={1}>
-                  {section.items.map((item, index) => (
-                    <button
-                      key={item.id}
-                      onClick={item.action}
-                      className={`w-full flex items-center justify-between p-4 transition-colors hover:bg-black/5 dark:hover:bg-white/5 ${
-                        index < section.items.length - 1 ? 'border-b border-line-light dark:border-line-dark' : ''
-                      }`}
-                    >
-                      <div className="text-left">
-                        <p className="text-body font-medium text-text-primary-light dark:text-text-primary-dark">
-                          {item.label}
-                        </p>
-                        <p className="text-caption text-text-secondary-light dark:text-text-secondary-dark">
-                          {item.description}
+              </SoftCard>
+            )}
+
+            {activeTab === 'security' && (
+              <SoftCard depth={1} className="p-6 md:p-8">
+                <h2 className="text-2xl font-semibold text-plush-graphite mb-6">
+                  Безопасность
+                </h2>
+                <div className="space-y-4">
+                  <Input
+                    label="Текущий пароль"
+                    type={showPassword ? 'text' : 'password'}
+                    value={securityData.currentPassword}
+                    onChange={(e) => setSecurityData({ ...securityData, currentPassword: e.target.value })}
+                    icon={
+                      <button
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="text-plush-graphite/40 hover:text-plush-graphite"
+                      >
+                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                      </button>
+                    }
+                  />
+                  <Input
+                    label="Новый пароль"
+                    type="password"
+                    value={securityData.newPassword}
+                    onChange={(e) => setSecurityData({ ...securityData, newPassword: e.target.value })}
+                  />
+                  <Input
+                    label="Подтвердите пароль"
+                    type="password"
+                    value={securityData.confirmPassword}
+                    onChange={(e) => setSecurityData({ ...securityData, confirmPassword: e.target.value })}
+                  />
+                  <SoftCard depth={1} className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="font-semibold text-plush-graphite mb-1">
+                          Двухфакторная аутентификация
+                        </h3>
+                        <p className="text-sm text-plush-graphite/60">
+                          Дополнительная защита вашего аккаунта
                         </p>
                       </div>
-                      <ChevronRight size={20} className="text-text-secondary-light dark:text-text-secondary-dark" />
-                    </button>
-                  ))}
-                </Card>
-              </div>
-            )
-          })}
-
-          {/* Notifications Detail */}
-          <div>
-            <div className="flex items-center gap-2 mb-3 px-2">
-              <Bell size={16} className="text-text-secondary-light dark:text-text-secondary-dark" />
-              <h3 className="text-body font-semibold text-text-secondary-light dark:text-text-secondary-dark uppercase tracking-wide">
-                Детальная настройка уведомлений
-              </h3>
-            </div>
-            <Card className="p-4" elevation={1}>
-              <div className="space-y-4">
-                {Object.entries(notifications).map(([key, value]) => {
-                  const labels: {[k: string]: string} = {
-                    posts: 'Новые посты от подписок',
-                    messages: 'Новые сообщения',
-                    events: 'Предстоящие события',
-                    dao: 'Голосования DAO',
-                  }
-                  return (
-                    <div key={key} className="flex items-center justify-between">
-                      <span className="text-body text-text-primary-light dark:text-text-primary-dark">
-                        {labels[key]}
-                      </span>
                       <button
-                        onClick={() => setNotifications({ ...notifications, [key]: !value })}
+                        onClick={() => setSecurityData({ ...securityData, twoFactorEnabled: !securityData.twoFactorEnabled })}
                         className={`w-12 h-6 rounded-full transition-colors ${
-                          value ? 'bg-sky' : 'bg-surface2-light dark:bg-surface2-dark'
+                          securityData.twoFactorEnabled ? 'bg-plush-primary' : 'bg-plush-graphite/20'
                         }`}
                       >
-                        <div className={`w-5 h-5 rounded-full bg-white transition-transform ${
-                          value ? 'translate-x-6' : 'translate-x-0.5'
-                        }`} />
+                        <div
+                          className={`w-5 h-5 bg-white rounded-full transition-transform ${
+                            securityData.twoFactorEnabled ? 'translate-x-6' : 'translate-x-0.5'
+                          }`}
+                        />
                       </button>
                     </div>
-                  )
-                })}
-              </div>
-            </Card>
-          </div>
+                  </SoftCard>
+                  <SoftButton variant="primary" size="lg" onClick={handleSave} className="w-full">
+                    Сохранить изменения
+                  </SoftButton>
+                </div>
+              </SoftCard>
+            )}
 
-          {/* Danger Zone */}
-          <div>
-            <div className="flex items-center gap-2 mb-3 px-2">
-              <Shield size={16} className="text-danger" />
-              <h3 className="text-body font-semibold text-danger uppercase tracking-wide">
+            {activeTab === 'notifications' && (
+              <SoftCard depth={1} className="p-6 md:p-8">
+                <h2 className="text-2xl font-semibold text-plush-graphite mb-6">
+                  Уведомления
+                </h2>
+                <div className="space-y-4">
+                  {Object.entries(notifications).map(([key, value]) => (
+                    <SoftCard key={key} depth={1} className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="font-semibold text-plush-graphite mb-1 capitalize">
+                            {key.replace(/([A-Z])/g, ' $1').trim()}
+                          </h3>
+                          <p className="text-sm text-plush-graphite/60">
+                            {key === 'push' && 'Push-уведомления в приложении'}
+                            {key === 'email' && 'Уведомления на email'}
+                            {key === 'sms' && 'SMS-уведомления'}
+                            {key === 'newFollowers' && 'Новые подписчики'}
+                            {key === 'newMessages' && 'Новые сообщения'}
+                            {key === 'walkReminders' && 'Напоминания о прогулках'}
+                            {key === 'eventReminders' && 'Напоминания о событиях'}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => setNotifications({ ...notifications, [key]: !value })}
+                          className={`w-12 h-6 rounded-full transition-colors ${
+                            value ? 'bg-plush-primary' : 'bg-plush-graphite/20'
+                          }`}
+                        >
+                          <div
+                            className={`w-5 h-5 bg-white rounded-full transition-transform ${
+                              value ? 'translate-x-6' : 'translate-x-0.5'
+                            }`}
+                          />
+                        </button>
+                      </div>
+                    </SoftCard>
+                  ))}
+                </div>
+              </SoftCard>
+            )}
+
+            {activeTab === 'privacy' && (
+              <SoftCard depth={1} className="p-6 md:p-8">
+                <h2 className="text-2xl font-semibold text-plush-graphite mb-6">
+                  Приватность
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-plush-graphite mb-2">
+                      Видимость профиля
+                    </label>
+                    <select
+                      value={privacy.profileVisibility}
+                      onChange={(e) => setPrivacy({ ...privacy, profileVisibility: e.target.value })}
+                      className="w-full px-4 py-3 plush-rounded-card bg-white text-plush-graphite border border-plush-graphite/10 focus:outline-none focus:ring-2 focus:ring-plush-primary/30"
+                    >
+                      <option value="public">Публичный</option>
+                      <option value="friends">Только друзья</option>
+                      <option value="private">Приватный</option>
+                    </select>
+                  </div>
+                  <SoftCard depth={1} className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="font-semibold text-plush-graphite mb-1">
+                          Показывать местоположение
+                        </h3>
+                        <p className="text-sm text-plush-graphite/60">
+                          Отображать вашу геопозицию на карте
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => setPrivacy({ ...privacy, showLocation: !privacy.showLocation })}
+                        className={`w-12 h-6 rounded-full transition-colors ${
+                          privacy.showLocation ? 'bg-plush-primary' : 'bg-plush-graphite/20'
+                        }`}
+                      >
+                        <div
+                          className={`w-5 h-5 bg-white rounded-full transition-transform ${
+                            privacy.showLocation ? 'translate-x-6' : 'translate-x-0.5'
+                          }`}
+                        />
+                      </button>
+                    </div>
+                  </SoftCard>
+                  <SoftButton variant="primary" size="lg" onClick={handleSave} className="w-full">
+                    Сохранить изменения
+                  </SoftButton>
+                </div>
+              </SoftCard>
+            )}
+
+            {activeTab === 'appearance' && (
+              <SoftCard depth={1} className="p-6 md:p-8">
+                <h2 className="text-2xl font-semibold text-plush-graphite mb-6">
+                  Внешний вид
+                </h2>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-plush-graphite mb-4">
+                      Тема
+                    </label>
+                    <div className="grid grid-cols-3 gap-4">
+                      {[
+                        { value: 'light', label: 'Светлая', icon: Sun },
+                        { value: 'dark', label: 'Тёмная', icon: Moon },
+                        { value: 'auto', label: 'Авто', icon: Globe },
+                      ].map((option) => {
+                        const Icon = option.icon
+                        return (
+                          <button
+                            key={option.value}
+                            onClick={() => setTheme(option.value as any)}
+                            className={`p-4 rounded-plush-card border-2 transition-all ${
+                              theme === option.value
+                                ? 'border-plush-primary bg-plush-primary/10'
+                                : 'border-plush-graphite/10 bg-white'
+                            }`}
+                          >
+                            <Icon size={32} className="mx-auto mb-2 text-plush-primary" />
+                            <p className="font-medium text-plush-graphite">{option.label}</p>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </SoftCard>
+            )}
+
+            {activeTab === 'language' && (
+              <SoftCard depth={1} className="p-6 md:p-8">
+                <h2 className="text-2xl font-semibold text-plush-graphite mb-6">
+                  Язык
+                </h2>
+                <div className="space-y-3">
+                  {['Русский', 'English', 'Deutsch', 'Français'].map((lang) => (
+                    <button
+                      key={lang}
+                      className="w-full p-4 rounded-plush-card bg-white border border-plush-graphite/10 hover:border-plush-primary transition-all text-left"
+                    >
+                      <p className="font-medium text-plush-graphite">{lang}</p>
+                    </button>
+                  ))}
+                </div>
+              </SoftCard>
+            )}
+          </motion.div>
+
+          {/* Опасная зона */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mt-8"
+          >
+            <SoftCard depth={1} className="p-6 border-2 border-plush-alert/20">
+              <h2 className="text-xl font-semibold text-plush-alert mb-4">
                 Опасная зона
-              </h3>
-            </div>
-            <Card className="overflow-hidden" elevation={1}>
-              <button className="w-full flex items-center justify-between p-4 transition-colors hover:bg-danger/5 border-b border-line-light dark:border-line-dark">
-                <div className="text-left">
-                  <p className="text-body font-medium text-danger">
-                    Удалить аккаунт
-                  </p>
-                  <p className="text-caption text-text-secondary-light dark:text-text-secondary-dark">
-                    Безвозвратное удаление всех данных
-                  </p>
-                </div>
-                <ChevronRight size={20} className="text-danger" />
-              </button>
-              <button className="w-full flex items-center justify-between p-4 transition-colors hover:bg-danger/5">
-                <div className="text-left">
-                  <p className="text-body font-medium text-danger">
-                    Выйти из аккаунта
-                  </p>
-                  <p className="text-caption text-text-secondary-light dark:text-text-secondary-dark">
-                    Выход на всех устройствах
-                  </p>
-                </div>
-                <LogOut size={20} className="text-danger" />
-              </button>
-            </Card>
-          </div>
-
-          {/* App Info */}
-          <Card className="p-4 text-center" elevation={1}>
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <Info size={16} className="text-text-secondary-light dark:text-text-secondary-dark" />
-              <p className="text-caption text-text-secondary-light dark:text-text-secondary-dark">
-                Dogymorbis v1.0.0
-              </p>
-            </div>
-            <p className="text-caption text-text-secondary-light dark:text-text-secondary-dark">
-              © 2025 Dogymorbis. Все права защищены.
-            </p>
-          </Card>
+              </h2>
+              <div className="space-y-4">
+                <SoftButton
+                  variant="ghost"
+                  size="lg"
+                  className="w-full text-plush-alert hover:bg-plush-alert/10"
+                >
+                  <Trash2 size={20} className="mr-2" />
+                  Удалить аккаунт
+                </SoftButton>
+                <SoftButton
+                  variant="ghost"
+                  size="lg"
+                  className="w-full text-plush-graphite hover:bg-plush-graphite/10"
+                >
+                  <LogOut size={20} className="mr-2" />
+                  Выйти из аккаунта
+                </SoftButton>
+              </div>
+            </SoftCard>
+          </motion.div>
         </div>
       </div>
     </div>
   )
 }
-
-
