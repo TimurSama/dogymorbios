@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Menu, X, User, BookOpen, Wallet, MessageCircle, Heart,
   Users, Calendar, Trophy, ShoppingBag, Briefcase, Vote,
-  Settings, Sun, Moon, GraduationCap, Library, Map
+  Settings, Sun, Moon, GraduationCap, Library, Map, DollarSign
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTheme } from '@/components/ThemeProvider'
@@ -32,6 +32,7 @@ const menuItems = [
   { id: 'dao', label: 'DAO / Управление', icon: Vote, path: '/dao' },
   // Информационные страницы
   { id: 'projecthub', label: 'ProjectHub', icon: Library, path: '/projecthub' },
+  { id: 'economics', label: 'Экономика', icon: DollarSign, path: '/presentation/economics' },
   { id: 'presentation', label: 'Презентация', icon: BookOpen, path: '/presentation' },
   { id: 'whitepaper', label: 'Вайтпэпер', icon: BookOpen, path: '/whitepaper' },
   { id: 'about', label: 'О проекте', icon: User, path: '/about' },
@@ -80,27 +81,27 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed top-0 left-0 bottom-0 w-80 bg-[var(--surface)] border-r border-[var(--outline)] z-[70] overflow-y-auto shadow-soft-lg"
+            className="fixed top-0 left-0 bottom-0 w-80 bg-plush-cream border-r border-plush-graphite/10 z-[70] overflow-y-auto plush-depth-3"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between p-6 border-b border-plush-graphite/10">
               <div className="flex items-center gap-3">
-                <DoghouseIcon size={32} className="text-blue-500" strokeWidth={2} />
+                <DoghouseIcon size={32} className="text-plush-primary" strokeWidth={2} />
                 <div>
-                  <h2 className="font-bold text-base text-gray-900 dark:text-gray-100">
+                  <h2 className="font-bold text-base text-plush-graphite">
                     Dogymorbis
                   </h2>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">
+                  <p className="text-xs text-plush-graphite/60">
                     Гуляй, общайся, получай косточки
                   </p>
                 </div>
               </div>
               <motion.button
                 onClick={onClose}
-                className="p-2 rounded-lg state-layer touch-target"
+                className="p-2 rounded-full hover:bg-plush-cream-pressed touch-target transition-colors"
                 whileTap={{ scale: 0.95 }}
               >
-                <X size={24} className="text-[var(--text-primary)]" />
+                <X size={24} className="text-plush-graphite" />
               </motion.button>
             </div>
 
@@ -115,10 +116,10 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     key={item.id}
                     onClick={() => handleNavigate(item.path)}
                     className={cn(
-                      'w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-150 text-left state-layer touch-target',
+                      'w-full flex items-center gap-3 px-4 py-3 plush-rounded-card transition-all duration-150 text-left touch-target',
                       isActive
-                        ? 'bg-[var(--sky)]/10 text-[var(--sky)] font-semibold'
-                        : 'text-[var(--text-primary)] hover:bg-[var(--surface-2)]'
+                        ? 'bg-plush-primary/10 text-plush-primary font-semibold'
+                        : 'text-plush-graphite hover:bg-plush-cream-pressed'
                     )}
                   >
                     <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
@@ -126,7 +127,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     {isActive && (
                       <motion.div
                         layoutId="activeSidebarItem"
-                        className="ml-auto w-1 h-6 bg-blue-500 rounded-full"
+                        className="ml-auto w-1 h-6 bg-plush-primary rounded-full"
                         transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                       />
                     )}
@@ -136,28 +137,28 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             </nav>
 
             {/* Theme Toggle */}
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="p-4 border-t border-plush-graphite/10">
               <button
                 onClick={toggleTheme}
-                className="w-full flex items-center justify-between px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                className="w-full flex items-center justify-between px-4 py-3 plush-rounded-card bg-plush-cream-pressed hover:bg-plush-cream-elevated transition-colors"
               >
-                <span className="text-sm text-gray-900 dark:text-gray-100">
+                <span className="text-sm text-plush-graphite font-medium">
                   Тема оформления
                 </span>
                 <div className="flex items-center gap-2">
                   {theme === 'light' ? (
-                    <Sun size={20} className="text-yellow-500" />
+                    <Sun size={20} className="text-plush-yellow" />
                   ) : (
-                    <Moon size={20} className="text-blue-400" />
+                    <Moon size={20} className="text-plush-primary" />
                   )}
                 </div>
               </button>
             </div>
 
             {/* Footer */}
-            <div className="p-6 text-center border-t border-gray-200 dark:border-gray-700">
-              <PawIcon size={32} className="mx-auto mb-2 text-blue-500" />
-              <p className="text-xs text-gray-600 dark:text-gray-400">
+            <div className="p-6 text-center border-t border-plush-graphite/10">
+              <PawIcon size={32} className="mx-auto mb-2 text-plush-primary" />
+              <p className="text-xs text-plush-graphite/60">
                 © 2025 Dogymorbis
               </p>
             </div>

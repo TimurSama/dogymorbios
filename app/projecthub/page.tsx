@@ -3,13 +3,14 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { 
-  Cpu, Gamepad2, Droplet, TrendingUp, DollarSign, 
-  Target, Calendar, Users, Zap, ArrowRight, Lock
+  Cpu, ToyBrick, Droplets, TrendingUp, DollarSign, 
+  Calendar, Users, Target, ArrowRight, FileText,
+  Zap, Heart, Activity, MapPin, Wifi
 } from 'lucide-react'
 import { SoftCard } from '@/components/ui/SoftCard'
 import { SoftButton } from '@/components/ui/SoftButton'
-import { WhitepaperPopup } from '@/components/whitepaper/WhitepaperPopup'
 import { AppBar } from '@/components/navigation/AppBar'
+import { Modal } from '@/components/ui/Modal'
 
 /**
  * ProjectHub - Центр исследований и разработок
@@ -23,154 +24,133 @@ export default function ProjectHubPage() {
       id: 'smart-collar',
       title: 'Смарт ошейник',
       icon: <Cpu size={48} />,
-      category: 'Hardware',
-      status: 'research',
+      status: 'В разработке',
+      progress: 45,
       description: 'Ошейник с системой мониторинга и сбора информации о жизненных показателях и активности питомца',
       features: [
         'Мониторинг давления, пульса, дыхания',
         'Отслеживание движений (ходьба, бег, игры, тренировки)',
         'Анализ сна',
-        'GPS и NFC технологии',
+        'GPS-трекинг',
+        'NFC для быстрой идентификации',
         'Синхронизация с приложением',
       ],
       market: {
         size: '$2.5B',
-        growth: '+15%',
-        description: 'Рынок умных устройств для домашних животных растёт на 15% ежегодно',
+        growth: '+18%',
+        target: '15M собак в России',
       },
-      investment: {
-        research: 500000,
-        prototype: 1200000,
-        production: 5000000,
-        total: 6700000,
-        current: 250000,
-        progress: 3.7,
+      budget: {
+        total: '$850K',
+        spent: '$382K',
+        remaining: '$468K',
+        phases: [
+          { name: 'Исследования', amount: '$150K', status: 'Завершено' },
+          { name: 'Прототип', amount: '$200K', status: 'В процессе' },
+          { name: 'Тестирование', amount: '$150K', status: 'Запланировано' },
+          { name: 'Производство', amount: '$350K', status: 'Запланировано' },
+        ],
       },
       timeline: {
-        research: '6 месяцев',
-        prototype: '12 месяцев',
-        production: '18 месяцев',
-        total: '36 месяцев',
+        start: '2024 Q3',
+        prototype: '2025 Q2',
+        production: '2025 Q4',
       },
-      investors: 45,
-      documents: [
-        'Техническое задание',
-        'Схема электроники',
-        'Чертежи корпуса',
-        'Исследование рынка',
-        'Бизнес-план',
-      ],
+      team: 8,
+      documents: ['Техническое задание', 'Схемы и чертежи', 'Исследование рынка', 'Бизнес-план'],
     },
     {
       id: 'smart-toys',
       title: 'Смарт игрушки',
-      icon: <Gamepad2 size={48} />,
-      category: 'Hardware',
-      status: 'research',
-      description: 'Игрушки и тренажёры с настраиваемыми режимами включения, реакций и игр с камерами и удалённым подключением',
+      icon: <ToyBrick size={48} />,
+      status: 'Концепция',
+      progress: 25,
+      description: 'Игрушки и тренажеры с настраиваемыми режимами включения, реакций и игр с камерами и удаленным подключением',
       features: [
-        'Убегающий мячик с автономным управлением',
+        'Убегающий мячик с автономным движением',
         'Настенная веревка-тягалка с датчиками силы',
-        'Беговая дорожка для людей и животных',
-        'Настраиваемый наклон и поощрения',
-        'Камеры для наблюдения и удалённого управления',
+        'Беговая дорожка для собак и людей',
+        'Настраиваемый наклон и скорость',
+        'Выдача вкусных поощрений за активность',
+        'Камеры для наблюдения',
+        'Удаленное управление через приложение',
         'Автоматическое выключение на ночь',
       ],
       market: {
         size: '$1.8B',
-        growth: '+12%',
-        description: 'Рынок интерактивных игрушек для животных показывает стабильный рост',
+        growth: '+22%',
+        target: '12M активных владельцев',
       },
-      investment: {
-        research: 300000,
-        prototype: 800000,
-        production: 3500000,
-        total: 4600000,
-        current: 120000,
-        progress: 2.6,
+      budget: {
+        total: '$1.2M',
+        spent: '$300K',
+        remaining: '$900K',
+        phases: [
+          { name: 'Исследования', amount: '$200K', status: 'В процессе' },
+          { name: 'Прототип мячика', amount: '$150K', status: 'Запланировано' },
+          { name: 'Прототип дорожки', amount: '$400K', status: 'Запланировано' },
+          { name: 'Производство', amount: '$450K', status: 'Запланировано' },
+        ],
       },
       timeline: {
-        research: '4 месяца',
-        prototype: '10 месяцев',
-        production: '16 месяцев',
-        total: '30 месяцев',
+        start: '2024 Q4',
+        prototype: '2025 Q3',
+        production: '2026 Q1',
       },
-      investors: 32,
-      documents: [
-        'Концепция продуктов',
-        'Технические схемы',
-        '3D-модели',
-        'Маркетинговое исследование',
-      ],
+      team: 12,
+      documents: ['Концепция продуктов', 'Технические требования', 'Исследование рынка'],
     },
     {
       id: 'smart-accessories',
       title: 'Смарт аксессуары',
-      icon: <Droplet size={48} />,
-      category: 'Hardware',
-      status: 'research',
+      icon: <Droplets size={48} />,
+      status: 'Исследования',
+      progress: 15,
       description: 'Поилки, кормушки с синхронизацией с приложением для оптимального расчета порций и времени приема пищи',
       features: [
-        'Умная кормушка с расчетом порций',
-        'Синхронизация с другими источниками питания',
+        'Умная кормушка с дозатором',
+        'Синхронизация с приложением',
+        'Оптимальный расчет порций',
+        'Учет дополнительного кормления (мясо, лакомства)',
         'Интерактивный коврик с препятствиями',
-        'Увеличение времени приёма пищи',
         'Развитие обоняния и поиска',
-        'Мониторинг потребления воды',
+        'Увеличение времени приема пищи',
+        'Умная поилка с контролем потребления воды',
       ],
       market: {
-        size: '$1.2B',
-        growth: '+18%',
-        description: 'Рынок автоматизированных аксессуаров для ухода за питомцами',
+        size: '$3.2B',
+        growth: '+15%',
+        target: '20M домашних питомцев',
       },
-      investment: {
-        research: 200000,
-        prototype: 600000,
-        production: 2800000,
-        total: 3600000,
-        current: 80000,
-        progress: 2.2,
+      budget: {
+        total: '$650K',
+        spent: '$98K',
+        remaining: '$552K',
+        phases: [
+          { name: 'Исследования', amount: '$100K', status: 'В процессе' },
+          { name: 'Прототип кормушки', amount: '$180K', status: 'Запланировано' },
+          { name: 'Прототип коврика', amount: '$120K', status: 'Запланировано' },
+          { name: 'Производство', amount: '$250K', status: 'Запланировано' },
+        ],
       },
       timeline: {
-        research: '3 месяца',
-        prototype: '8 месяцев',
-        production: '14 месяцев',
-        total: '25 месяцев',
+        start: '2025 Q1',
+        prototype: '2025 Q4',
+        production: '2026 Q2',
       },
-      investors: 28,
-      documents: [
-        'Техническая документация',
-        'Схемы механизмов',
-        'Прототипы',
-        'Тестирование материалов',
-      ],
+      team: 6,
+      documents: ['Исследование потребностей', 'Техническая концепция', 'Маркетинговый анализ'],
     },
   ]
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'research': return 'text-plush-yellow'
-      case 'prototype': return 'text-plush-primary'
-      case 'production': return 'text-plush-sky'
-      default: return 'text-plush-graphite/60'
-    }
-  }
-
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'research': return 'Исследование'
-      case 'prototype': return 'Прототип'
-      case 'production': return 'Производство'
-      default: return 'Завершено'
-    }
-  }
+  const selectedProject = projects.find(p => p.id === openProject)
 
   return (
     <div className="min-h-screen bg-plush-cream pb-20 safe-area-bottom">
       <AppBar title="ProjectHub" />
 
       <div className="px-4 py-6">
-        <div className="max-w-7xl mx-auto space-y-8">
+        <div className="max-w-6xl mx-auto space-y-8">
           {/* Hero */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -184,7 +164,7 @@ export default function ProjectHubPage() {
               Центр исследований и разработок Dogymorbis
             </p>
             <p className="text-plush-graphite/60 max-w-2xl mx-auto">
-              Инвестируйте в инновационные проекты через токен-стейкинг и участвуйте в развитии экосистемы
+              Инновационные продукты для улучшения жизни с питомцами
             </p>
           </motion.div>
 
@@ -192,9 +172,9 @@ export default function ProjectHubPage() {
           <div className="grid md:grid-cols-4 gap-4">
             {[
               { label: 'Проектов', value: projects.length, icon: Target },
-              { label: 'Инвесторов', value: projects.reduce((sum, p) => sum + p.investors, 0), icon: Users },
-              { label: 'Собрано', value: '$450K', icon: DollarSign },
-              { label: 'Нужно', value: '$14.9M', icon: TrendingUp },
+              { label: 'Бюджет', value: '$2.7M', icon: DollarSign },
+              { label: 'Команда', value: '26', icon: Users },
+              { label: 'Прогресс', value: '28%', icon: TrendingUp },
             ].map((stat, i) => (
               <motion.div
                 key={i}
@@ -212,7 +192,7 @@ export default function ProjectHubPage() {
           </div>
 
           {/* Проекты */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
             {projects.map((project, i) => (
               <motion.div
                 key={project.id}
@@ -224,54 +204,37 @@ export default function ProjectHubPage() {
                   depth={1}
                   interactive
                   hover
-                  className="p-6 h-full cursor-pointer"
+                  className="p-6 cursor-pointer h-full"
                   onClick={() => setOpenProject(project.id)}
                 >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="text-plush-primary">{project.icon}</div>
-                    <span className={`text-xs font-semibold px-2 py-1 rounded-full bg-plush-cream-pressed ${getStatusColor(project.status)}`}>
-                      {getStatusLabel(project.status)}
+                  <div className="text-plush-primary mb-4">{project.icon}</div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-xl font-semibold text-plush-graphite">
+                      {project.title}
+                    </h3>
+                    <span className="px-2 py-1 text-xs font-semibold bg-plush-primary/10 text-plush-primary rounded-full">
+                      {project.status}
                     </span>
                   </div>
-                  
-                  <h3 className="text-xl font-semibold text-plush-graphite mb-2">
-                    {project.title}
-                  </h3>
-                  
                   <p className="text-sm text-plush-graphite/70 mb-4">
                     {project.description}
                   </p>
-
-                  {/* Прогресс инвестиций */}
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between text-xs mb-2">
-                      <span className="text-plush-graphite/60">Собрано</span>
-                      <span className="font-semibold text-plush-primary">
-                        ${(project.investment.current / 1000).toFixed(0)}K / ${(project.investment.total / 1000000).toFixed(1)}M
-                      </span>
+                  <div className="space-y-2 mb-4">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-plush-graphite/60">Прогресс</span>
+                      <span className="font-semibold text-plush-graphite">{project.progress}%</span>
                     </div>
                     <div className="w-full bg-plush-cream-pressed rounded-full h-2">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${project.investment.progress}%` }}
-                        transition={{ duration: 0.5, delay: i * 0.1 }}
+                      <div
                         className="bg-plush-primary h-2 rounded-full"
+                        style={{ width: `${project.progress}%` }}
                       />
                     </div>
                   </div>
-
-                  {/* Быстрая информация */}
-                  <div className="grid grid-cols-2 gap-2 text-xs mb-4">
-                    <div>
-                      <p className="text-plush-graphite/60">Рынок</p>
-                      <p className="font-semibold text-plush-graphite">{project.market.size}</p>
-                    </div>
-                    <div>
-                      <p className="text-plush-graphite/60">Инвесторов</p>
-                      <p className="font-semibold text-plush-graphite">{project.investors}</p>
-                    </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-plush-graphite/60">Бюджет</span>
+                    <span className="font-semibold text-plush-primary">{project.budget.total}</span>
                   </div>
-
                   <SoftButton
                     variant="ghost"
                     size="sm"
@@ -279,7 +242,7 @@ export default function ProjectHubPage() {
                       e.stopPropagation()
                       setOpenProject(project.id)
                     }}
-                    className="w-full"
+                    className="w-full mt-4"
                   >
                     Подробнее
                     <ArrowRight size={16} className="ml-2" />
@@ -291,146 +254,140 @@ export default function ProjectHubPage() {
         </div>
       </div>
 
-      {/* Попапы проектов */}
-      {projects.map((project) => (
-        <ProjectPopup
-          key={project.id}
-          project={project}
-          isOpen={openProject === project.id}
+      {/* Модальное окно проекта */}
+      {selectedProject && (
+        <Modal
+          isOpen={openProject === selectedProject.id}
           onClose={() => setOpenProject(null)}
-        />
-      ))}
-    </div>
-  )
-}
-
-function ProjectPopup({ project, isOpen, onClose }: { project: any; isOpen: boolean; onClose: () => void }) {
-  return (
-    <WhitepaperPopup
-      isOpen={isOpen}
-      onClose={onClose}
-      title={project.title}
-      icon={project.icon}
-      content={
-        <div className="space-y-6">
-          {/* Описание */}
-          <div>
-            <h3 className="text-xl font-semibold text-plush-graphite mb-3">Описание проекта</h3>
-            <p className="text-plush-graphite/70">{project.description}</p>
-          </div>
-
-          {/* Функции */}
-          <div>
-            <h3 className="text-xl font-semibold text-plush-graphite mb-3">Основные функции</h3>
-            <ul className="space-y-2">
-              {project.features.map((feature: string, i: number) => (
-                <li key={i} className="flex items-start gap-2 text-plush-graphite/70">
-                  <span className="text-plush-primary mt-1">•</span>
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Рынок */}
-          <SoftCard depth={1} className="p-6">
-            <h3 className="text-xl font-semibold text-plush-graphite mb-4">Анализ рынка</h3>
+          title={selectedProject.title}
+          size="xl"
+        >
+          <div className="space-y-6">
+            {/* Статус и прогресс */}
             <div className="grid md:grid-cols-3 gap-4">
-              <div>
-                <p className="text-sm text-plush-graphite/60 mb-1">Размер рынка</p>
-                <p className="text-2xl font-bold text-plush-primary">{project.market.size}</p>
-              </div>
-              <div>
-                <p className="text-sm text-plush-graphite/60 mb-1">Рост</p>
-                <p className="text-2xl font-bold text-plush-sky">{project.market.growth}</p>
-              </div>
-              <div>
-                <p className="text-sm text-plush-graphite/60">{project.market.description}</p>
-              </div>
+              <SoftCard depth={1} className="p-4">
+                <p className="text-sm text-plush-graphite/60 mb-1">Статус</p>
+                <p className="font-semibold text-plush-graphite">{selectedProject.status}</p>
+              </SoftCard>
+              <SoftCard depth={1} className="p-4">
+                <p className="text-sm text-plush-graphite/60 mb-1">Прогресс</p>
+                <p className="font-semibold text-plush-graphite">{selectedProject.progress}%</p>
+              </SoftCard>
+              <SoftCard depth={1} className="p-4">
+                <p className="text-sm text-plush-graphite/60 mb-1">Команда</p>
+                <p className="font-semibold text-plush-graphite">{selectedProject.team} человек</p>
+              </SoftCard>
             </div>
-          </SoftCard>
 
-          {/* Инвестиции */}
-          <SoftCard depth={1} className="p-6">
-            <h3 className="text-xl font-semibold text-plush-graphite mb-4">Инвестиционный план</h3>
-            <div className="space-y-4">
-              {[
-                { label: 'Исследование', amount: project.investment.research },
-                { label: 'Прототип', amount: project.investment.prototype },
-                { label: 'Производство', amount: project.investment.production },
-              ].map((stage, i) => (
-                <div key={i} className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-plush-graphite/70">{stage.label}</span>
-                    <span className="font-semibold text-plush-graphite">
-                      ${(stage.amount / 1000).toFixed(0)}K
-                    </span>
+            {/* Описание */}
+            <div>
+              <h3 className="text-lg font-semibold text-plush-graphite mb-3">Описание</h3>
+              <p className="text-plush-graphite/70">{selectedProject.description}</p>
+            </div>
+
+            {/* Функции */}
+            <div>
+              <h3 className="text-lg font-semibold text-plush-graphite mb-3">Функции</h3>
+              <div className="grid md:grid-cols-2 gap-2">
+                {selectedProject.features.map((feature, i) => (
+                  <div key={i} className="flex items-start gap-2">
+                    <Zap size={16} className="text-plush-primary mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-plush-graphite/70">{feature}</span>
                   </div>
-                  <div className="w-full bg-plush-cream-pressed rounded-full h-2">
-                    <div
-                      className="bg-plush-primary h-2 rounded-full"
-                      style={{ width: `${(stage.amount / project.investment.total) * 100}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-              <div className="pt-4 border-t border-plush-graphite/10">
-                <div className="flex justify-between items-center">
-                  <span className="font-semibold text-plush-graphite">Всего требуется</span>
-                  <span className="text-2xl font-bold text-plush-primary">
-                    ${(project.investment.total / 1000000).toFixed(2)}M
-                  </span>
-                </div>
-                <div className="flex justify-between items-center mt-2">
-                  <span className="text-sm text-plush-graphite/60">Собрано</span>
-                  <span className="text-lg font-semibold text-plush-sky">
-                    ${(project.investment.current / 1000).toFixed(0)}K ({project.investment.progress}%)
-                  </span>
-                </div>
+                ))}
               </div>
             </div>
-          </SoftCard>
 
-          {/* Timeline */}
-          <SoftCard depth={1} className="p-6">
-            <h3 className="text-xl font-semibold text-plush-graphite mb-4">Сроки разработки</h3>
-            <div className="space-y-3">
-              {Object.entries(project.timeline).map(([key, value]) => (
-                <div key={key} className="flex justify-between items-center">
-                  <span className="text-plush-graphite/70 capitalize">{key === 'total' ? 'Итого' : key}</span>
-                  <span className="font-semibold text-plush-graphite">{value as string}</span>
+            {/* Рынок */}
+            <SoftCard depth={1} className="p-6">
+              <h3 className="text-lg font-semibold text-plush-graphite mb-4">Анализ рынка</h3>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div>
+                  <p className="text-sm text-plush-graphite/60 mb-1">Размер рынка</p>
+                  <p className="text-xl font-bold text-plush-primary">{selectedProject.market.size}</p>
                 </div>
-              ))}
-            </div>
-          </SoftCard>
-
-          {/* Документация */}
-          <SoftCard depth={1} className="p-6">
-            <h3 className="text-xl font-semibold text-plush-graphite mb-4">Документация</h3>
-            <div className="space-y-2">
-              {project.documents.map((doc: string, i: number) => (
-                <div key={i} className="flex items-center gap-2 p-2 rounded-plush-card bg-plush-cream-pressed">
-                  <Lock size={16} className="text-plush-graphite/40" />
-                  <span className="text-sm text-plush-graphite/70">{doc}</span>
-                  <span className="ml-auto text-xs text-plush-graphite/40">Требуется стейкинг</span>
+                <div>
+                  <p className="text-sm text-plush-graphite/60 mb-1">Рост</p>
+                  <p className="text-xl font-bold text-plush-sky">{selectedProject.market.growth}</p>
                 </div>
-              ))}
-            </div>
-          </SoftCard>
+                <div>
+                  <p className="text-sm text-plush-graphite/60 mb-1">Целевая аудитория</p>
+                  <p className="text-xl font-bold text-plush-graphite">{selectedProject.market.target}</p>
+                </div>
+              </div>
+            </SoftCard>
 
-          {/* CTA */}
-          <SoftCard depth={2} className="p-6 bg-gradient-to-br from-plush-primary/10 to-plush-sky/10">
-            <h3 className="text-xl font-semibold text-plush-graphite mb-4">Инвестировать в проект</h3>
-            <p className="text-plush-graphite/70 mb-4">
-              Участвуйте в развитии проекта через токен-стейкинг. Чем больше вы стейкаете, тем больше доступа к документации и прибыли.
-            </p>
-            <SoftButton variant="primary" size="lg" className="w-full">
-              <Zap size={20} className="mr-2" />
-              Начать стейкинг
-            </SoftButton>
-          </SoftCard>
-        </div>
-      }
-    />
+            {/* Бюджет */}
+            <SoftCard depth={1} className="p-6">
+              <h3 className="text-lg font-semibold text-plush-graphite mb-4">Бюджет проекта</h3>
+              <div className="space-y-3 mb-4">
+                <div className="flex justify-between">
+                  <span className="text-plush-graphite/70">Общий бюджет</span>
+                  <span className="font-semibold text-plush-graphite">{selectedProject.budget.total}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-plush-graphite/70">Потрачено</span>
+                  <span className="font-semibold text-plush-primary">{selectedProject.budget.spent}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-plush-graphite/70">Осталось</span>
+                  <span className="font-semibold text-plush-sky">{selectedProject.budget.remaining}</span>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <h4 className="font-semibold text-plush-graphite">Этапы финансирования</h4>
+                {selectedProject.budget.phases.map((phase, i) => (
+                  <div key={i} className="p-3 bg-plush-cream-pressed rounded-plush-card">
+                    <div className="flex justify-between mb-1">
+                      <span className="font-medium text-plush-graphite">{phase.name}</span>
+                      <span className="text-plush-primary font-semibold">{phase.amount}</span>
+                    </div>
+                    <span className="text-xs text-plush-graphite/60">{phase.status}</span>
+                  </div>
+                ))}
+              </div>
+            </SoftCard>
+
+            {/* Таймлайн */}
+            <SoftCard depth={1} className="p-6">
+              <h3 className="text-lg font-semibold text-plush-graphite mb-4">Сроки</h3>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-plush-graphite/70">Начало</span>
+                  <span className="font-semibold text-plush-graphite">{selectedProject.timeline.start}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-plush-graphite/70">Прототип</span>
+                  <span className="font-semibold text-plush-primary">{selectedProject.timeline.prototype}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-plush-graphite/70">Запуск производства</span>
+                  <span className="font-semibold text-plush-sky">{selectedProject.timeline.production}</span>
+                </div>
+              </div>
+            </SoftCard>
+
+            {/* Документы */}
+            <SoftCard depth={1} className="p-6">
+              <h3 className="text-lg font-semibold text-plush-graphite mb-4">Документация</h3>
+              <div className="space-y-2">
+                {selectedProject.documents.map((doc, i) => (
+                  <button
+                    key={i}
+                    className="w-full flex items-center justify-between p-3 bg-plush-cream-pressed rounded-plush-card hover:bg-plush-cream-elevated transition-colors"
+                  >
+                    <div className="flex items-center gap-2">
+                      <FileText size={20} className="text-plush-primary" />
+                      <span className="text-plush-graphite">{doc}</span>
+                    </div>
+                    <ArrowRight size={16} className="text-plush-graphite/40" />
+                  </button>
+                ))}
+              </div>
+            </SoftCard>
+          </div>
+        </Modal>
+      )}
+    </div>
   )
 }
