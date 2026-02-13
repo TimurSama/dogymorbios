@@ -397,7 +397,7 @@ export default function LandingPage() {
               <SoftButton 
                 variant="sky" 
                 size="lg"
-                onClick={() => router.push('/partner')}
+                onClick={() => router.push('/partner-landing')}
                 className="min-w-[200px]"
               >
                 Стать партнёром
