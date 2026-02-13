@@ -6,13 +6,17 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Menu, X, User, BookOpen, Wallet, MessageCircle, Heart,
   Users, Calendar, Trophy, ShoppingBag, Briefcase, Vote,
-  Settings, Sun, Moon, GraduationCap, Library
+  Settings, Sun, Moon, GraduationCap, Library, Map
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTheme } from '@/components/ThemeProvider'
 import { DoghouseIcon, PawIcon } from '@/components/icons/DogymorbisIcons'
 
 const menuItems = [
+  // Основные разделы
+  { id: 'dashboard', label: 'Главная', icon: User, path: '/dashboard' },
+  { id: 'map', label: 'Карта прогулок', icon: Map, path: '/map' },
+  { id: 'feed', label: 'Лента', icon: MessageCircle, path: '/feed' },
   { id: 'account', label: 'Аккаунт & питомцы', icon: User, path: '/account' },
   { id: 'journal', label: 'Журнал', icon: BookOpen, path: '/journal' },
   { id: 'wallet', label: 'Кошелёк', icon: Wallet, path: '/wallet' },
@@ -26,6 +30,14 @@ const menuItems = [
   { id: 'store', label: 'Магазин', icon: ShoppingBag, path: '/store' },
   { id: 'partner', label: 'Партнёрская программа', icon: Briefcase, path: '/partner' },
   { id: 'dao', label: 'DAO / Управление', icon: Vote, path: '/dao' },
+  // Информационные страницы
+  { id: 'projecthub', label: 'ProjectHub', icon: Library, path: '/projecthub' },
+  { id: 'presentation', label: 'Презентация', icon: BookOpen, path: '/presentation' },
+  { id: 'whitepaper', label: 'Вайтпэпер', icon: BookOpen, path: '/whitepaper' },
+  { id: 'about', label: 'О проекте', icon: User, path: '/about' },
+  { id: 'investors', label: 'Инвесторам', icon: Briefcase, path: '/investors' },
+  { id: 'help', label: 'Помощь', icon: Library, path: '/help' },
+  { id: 'contact', label: 'Контакты', icon: MessageCircle, path: '/contact' },
   { id: 'settings', label: 'Настройки', icon: Settings, path: '/settings' },
 ]
 

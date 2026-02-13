@@ -9,7 +9,7 @@ import { Chip } from '@/components/ui/Chip'
 import { TreeIcon, BowlIcon, PawIcon } from '@/components/icons/DogymorbisIcons'
 import { WalkTracker } from '@/components/map/WalkTracker'
 import { CollectibleMarker } from '@/components/map/CollectibleMarker'
-import { MapView } from '@/components/map/MapView'
+import { LeafletMap } from '@/components/map/LeafletMap'
 import { useGeolocation } from '@/hooks/useGeolocation'
 import { useCollectibles } from '@/hooks/useCollectibles'
 
@@ -107,7 +107,7 @@ export default function MapPage() {
 
       <div className="flex-1 relative bg-[var(--md-sys-color-surface-variant)] overflow-hidden">
         {/* Реальная карта */}
-        <MapView
+        <LeafletMap
           center={{
             lat: userPosition?.lat || 55.7558,
             lng: userPosition?.lng || 37.6173,
@@ -120,6 +120,9 @@ export default function MapPage() {
             type: m.type,
             name: m.name,
           }))}
+          onMarkerClick={(marker) => {
+            console.log('Marker clicked:', marker)
+          }}
           className="absolute inset-0"
         />
 
